@@ -40,11 +40,13 @@ const Credits = (() => {
 
   const CREDITS_SECTIONS = [
     { title: null, isTitleBlock: true },
+    { isCosmoCameo: true, theme: "classic" },
     { title: "Version", lines: ["Egypt Academy v1.0"] },
     { title: "Developed By", lines: ["Egypt Academy Team"] },
     { title: "Project Description", lines: [
       "An interactive learning platform for exploring ancient Egyptian history through lessons, quizzes, and guided discovery."
     ]},
+    { isCosmoCameo: true, theme: "sunset" },
     { title: "Core Components", lines: [
       "Cosmo — an on-screen learning companion",
       "Kiwo — a built-in conversational assistant"
@@ -55,6 +57,7 @@ const Credits = (() => {
       "Web Speech API",
       "LocalStorage for persistence"
     ]},
+    { isCosmoCameo: true, theme: "nile" },
     { title: "Features", lines: [
       "Interactive wallpaper lessons",
       "Timed quizzes with scoring",
@@ -66,19 +69,22 @@ const Credits = (() => {
     { title: "Educational Content", lines: [
       "Lessons covering the Giza pyramids, the Nile, and daily life in ancient Egypt"
     ]},
+    { isCosmoCameo: true, theme: "crimson" },
     { title: "Music Credits", lines: [
       "\u201cEchoes of Possibility\u201d — free ambient music for content creators"
     ]},
     { title: "Fonts", lines: ["Cinzel", "Frank Ruhl Libre", "Inter"] },
     { title: "Icons", lines: ["Custom iconography designed for Egypt Academy"] },
     { title: "Open Source Libraries", lines: ["No third-party runtime libraries — built with vanilla JavaScript"] },
+    { isCosmoCameo: true, theme: "moonlight" },
     { title: "Special Thanks", lines: [
       "Everyone who tested and gave feedback on Egypt Academy",
       "You, for completing every lesson"
     ]},
     { title: "Copyright", lines: [
       "\u00a9 " + new Date().getFullYear() + " Egypt Academy. All rights reserved."
-    ]}
+    ]},
+    { isCosmoFarewell: true }
   ];
 
   function buildCreditsHtml() {
@@ -88,6 +94,35 @@ const Credits = (() => {
           <div class="credits-section credits-title-block">
             <h1>Egypt Academy</h1>
             <p>Credits</p>
+          </div>
+        `;
+      }
+      if (sec.isCosmoCameo) {
+        const theme = (window.Cosmo && window.Cosmo.THEMES) ? window.Cosmo.THEMES[sec.theme] : null;
+        const inner = window.Cosmo ? window.Cosmo.spriteInnerHtml() : "";
+        const bodyColor = theme ? theme.bodyColor : "#f0c14b";
+        const accentColor = theme ? theme.accentColor : "#0d1b2a";
+        const mood = theme ? theme.mood : "happy";
+        return `
+          <div class="credits-section credits-cosmo-cameo">
+            <div class="cosmo-sprite credits-cosmo-sprite" data-mood="${mood}" style="--cosmo-body:${bodyColor}; --cosmo-accent:${accentColor};">${inner}</div>
+          </div>
+        `;
+      }
+      if (sec.isCosmoFarewell) {
+        const themeKeys = ["classic", "sunset", "nile", "crimson", "moonlight"];
+        const cosmos = themeKeys.map(key => {
+          const theme = (window.Cosmo && window.Cosmo.THEMES) ? window.Cosmo.THEMES[key] : null;
+          const inner = window.Cosmo ? window.Cosmo.spriteInnerHtml() : "";
+          const bodyColor = theme ? theme.bodyColor : "#f0c14b";
+          const accentColor = theme ? theme.accentColor : "#0d1b2a";
+          const mood = theme ? theme.mood : "happy";
+          return `<div class="cosmo-sprite credits-cosmo-sprite credits-cosmo-farewell-sprite" data-mood="${mood}" style="--cosmo-body:${bodyColor}; --cosmo-accent:${accentColor};">${inner}</div>`;
+        }).join("");
+        return `
+          <div class="credits-section credits-farewell-section">
+            <p class="credits-farewell-caption">Until next time...</p>
+            <div class="credits-farewell-row">${cosmos}</div>
           </div>
         `;
       }

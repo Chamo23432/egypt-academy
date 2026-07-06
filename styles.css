@@ -1922,3 +1922,71 @@ input { caret-color: var(--gold-400); }
 /* Kiwo conversation item smoother switch */
 .kiwo-convo-item { transition: background 0.2s ease, border-color 0.2s ease, transform 0.15s ease; }
 .kiwo-convo-item:active { transform: scale(0.98); }
+
+/* ============ Credits — Cosmo cameos and farewell lineup ============ */
+.credits-cosmo-cameo {
+  display: flex;
+  justify-content: center;
+  margin: 2.5rem 0;
+}
+.credits-cosmo-sprite {
+  position: static !important;
+  width: 64px !important;
+  height: 64px !important;
+  transform: none !important;
+}
+.credits-cosmo-sprite .cosmo-bob {
+  animation: cosmo-bob 2.6s ease-in-out infinite;
+}
+
+.credits-farewell-section {
+  margin-top: 2rem;
+  padding-top: 2rem;
+}
+.credits-farewell-caption {
+  font-family: var(--font-display);
+  color: var(--gold-400);
+  font-size: 1.1rem;
+  margin-bottom: 1.6rem;
+  font-style: italic;
+}
+.credits-farewell-row {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  gap: 1.2rem;
+  flex-wrap: wrap;
+}
+.credits-farewell-sprite {
+  width: 58px !important;
+  height: 58px !important;
+}
+/* Sad-but-not-crying farewell face: downturned mouth, drooping wave */
+.credits-farewell-sprite .cosmo-mouth {
+  d: path("M 41 65 Q 50 61 59 65") !important;
+}
+.credits-farewell-sprite .cosmo-brow-l,
+.credits-farewell-sprite .cosmo-brow-r {
+  opacity: 0.7;
+}
+.credits-farewell-sprite .cosmo-brow-l { d: path("M 32 44 Q 38 47 45 45") !important; }
+.credits-farewell-sprite .cosmo-brow-r { d: path("M 55 45 Q 62 47 68 44") !important; }
+.credits-farewell-sprite .cosmo-bob {
+  animation: cosmo-farewell-sway 3.4s ease-in-out infinite;
+}
+@keyframes cosmo-farewell-sway {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(1px) rotate(-1deg); }
+}
+.credits-farewell-sprite .cosmo-arm-r {
+  animation: cosmo-farewell-wave 1.6s ease-in-out infinite;
+  transform-origin: 75px 58px;
+}
+@keyframes cosmo-farewell-wave {
+  0%, 100% { transform: rotate(0deg); }
+  50% { transform: rotate(-18deg); }
+}
+.credits-farewell-sprite:nth-child(2) .cosmo-arm-r { animation-delay: 0.15s; }
+.credits-farewell-sprite:nth-child(3) .cosmo-arm-r { animation-delay: 0.3s; }
+.credits-farewell-sprite:nth-child(4) .cosmo-arm-r { animation-delay: 0.45s; }
+.credits-farewell-sprite:nth-child(5) .cosmo-arm-r { animation-delay: 0.6s; }
