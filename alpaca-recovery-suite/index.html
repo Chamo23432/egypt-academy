@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Alpaca Recovery Suite</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --night-900: #0d1b2a;
+    --glass-bg: rgba(20, 43, 64, 0.55);
+    --glass-border: rgba(240, 193, 75, 0.35);
+    --gold-400: #f0c14b;
+    --text-100: #f7f1e1;
+    --text-300: #cdd9e0;
+    --carnelian-500: #c1440e;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    min-height: 100vh;
+    background: radial-gradient(circle at 50% 20%, #1b3350, var(--night-900));
+    color: var(--text-100);
+    font-family: "Inter", system-ui, sans-serif;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+  }
+  .suite-card {
+    max-width: 420px;
+    width: 100%;
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: 18px;
+    backdrop-filter: blur(16px);
+    padding: 2rem;
+  }
+  .suite-eyebrow {
+    text-align: center;
+    font-family: "Cinzel", serif;
+    color: var(--text-300);
+    font-size: 0.85rem;
+    letter-spacing: 0.08em;
+  }
+  .suite-x {
+    text-align: center;
+    color: var(--gold-400);
+    font-size: 1.2rem;
+    margin: 0.15rem 0;
+  }
+  .suite-title {
+    text-align: center;
+    font-family: "Cinzel", serif;
+    font-size: 1.6rem;
+    color: var(--gold-400);
+    margin: 0 0 1.5rem;
+  }
+  .suite-label {
+    display: block;
+    font-size: 0.8rem;
+    color: var(--text-300);
+    margin: 1rem 0 0.4rem;
+  }
+  .suite-input {
+    width: 100%;
+    padding: 0.65rem 0.8rem;
+    border-radius: 10px;
+    border: 1px solid var(--glass-border);
+    background: rgba(255,255,255,0.06);
+    color: var(--text-100);
+    font-family: inherit;
+  }
+  .suite-btn {
+    margin-top: 1.5rem;
+    width: 100%;
+    font-family: inherit;
+    background: linear-gradient(90deg, #d4a017, var(--carnelian-500));
+    border: none;
+    color: var(--night-900);
+    font-weight: 600;
+    padding: 0.75rem;
+    border-radius: 999px;
+    cursor: pointer;
+    font-size: 0.95rem;
+  }
+  .suite-note {
+    margin-top: 1rem;
+    font-size: 0.78rem;
+    color: var(--text-300);
+    text-align: center;
+    line-height: 1.5;
+  }
+  .suite-feedback {
+    margin-top: 0.8rem;
+    font-size: 0.85rem;
+    color: var(--gold-400);
+    text-align: center;
+    min-height: 1.2em;
+  }
+</style>
+</head>
+<body>
+  <div class="suite-card">
+    <div class="suite-eyebrow">Egypt Academy</div>
+    <div class="suite-x">&times;</div>
+    <div class="suite-title">Alpaca Recovery Suite</div>
+
+    <label class="suite-label">Student name</label>
+    <input class="suite-input" id="name-input" type="text" placeholder="Exactly as entered in Egypt Academy" />
+
+    <label class="suite-label">Recovery code</label>
+    <input class="suite-input" id="code-input" type="text" placeholder="XXXX-XXXX-XXXX-XXXX" />
+
+    <button class="suite-btn" id="generate-btn">Generate recovery file</button>
+    <p class="suite-feedback" id="feedback"></p>
+    <p class="suite-note">
+      This creates a file you drop back into Egypt Academy's "Forgot password"
+      screen. It does not reset your password by itself — Egypt Academy checks
+      the file against your saved recovery code.
+    </p>
+  </div>
+
+<script>
+  document.getElementById("generate-btn").addEventListener("click", () => {
+    const name = document.getElementById("name-input").value.trim();
+    const code = document.getElementById("code-input").value.trim();
+    const feedback = document.getElementById("feedback");
+
+    if (!name || !code) {
+      feedback.textContent = "Please fill in both fields.";
+      feedback.style.color = "#c1440e";
+      return;
+    }
+
+    const payload = {
+      app: "egypt-academy-recovery",
+      studentName: name,
+      recoveryCode: code,
+      generatedAt: new Date().toISOString()
+    };
+
+    const blob = new Blob([JSON.stringify(payload, null, 2)], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "egypt-academy-recovery.json";
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    URL.revokeObjectURL(url);
+
+    feedback.style.color = "#f0c14b";
+    feedback.textContent = "File generated — drop it into Egypt Academy's recovery screen.";
+  });
+</script>
+</body>
+</html>

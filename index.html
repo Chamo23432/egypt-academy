@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Egypt Academy</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Frank+Ruhl+Libre:wght@400;500&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css" />
+<script>
+  // Apply saved theme before paint to avoid a flash of the default theme
+  (function () {
+    var t = localStorage.getItem("egyptAcademyTheme");
+    if (t && t !== "default") document.documentElement.setAttribute("data-theme", t);
+  })();
+</script>
+</head>
+<body>
+<div id="app-root">
+
+  <!-- ============ AUTH FLOW (shown before the app unlocks) ============ -->
+  <section id="auth-flow">
+
+    <!-- ===== SETUP WIZARD (first-time only) ===== -->
+    <div id="setup-wizard" class="setup-wizard" style="display:none;">
+      <audio id="setup-music" src="assets/audio/setup-music.mp4" preload="auto" loop></audio>
+
+      <div class="setup-steps-track">
+        <span class="setup-step-dot active" data-step="intro"></span>
+        <span class="setup-step-dot" data-step="name"></span>
+        <span class="setup-step-dot" data-step="password"></span>
+        <span class="setup-step-dot" data-step="recovery"></span>
+        <span class="setup-step-dot" data-step="theme"></span>
+        <span class="setup-step-dot" data-step="cosmo"></span>
+        <span class="setup-step-dot" data-step="tour-choice"></span>
+        <span class="setup-step-dot" data-step="finish"></span>
+      </div>
+
+      <div id="setup-intro" class="setup-screen setup-screen-active">
+        <div class="auth-card glass-panel setup-card">
+          <div class="setup-ankh">&#9765;</div>
+          <h1 class="auth-title">Welcome to Egypt Academy</h1>
+          <p class="auth-subtitle">Let's set up your student account before you begin exploring ancient Egypt.</p>
+          <button class="auth-btn" id="setup-intro-next-btn">Begin Setup</button>
+        </div>
+      </div>
+
+      <div id="setup-name" class="setup-screen">
+        <div class="auth-card glass-panel setup-card">
+          <p class="setup-step-label">Step 1 of 7</p>
+          <h1 class="auth-title">What's your name?</h1>
+          <p class="auth-subtitle">This is how Egypt Academy will greet you.</p>
+          <label class="auth-label">Student name</label>
+          <input class="auth-input" id="create-name-input" type="text" placeholder="e.g. Neo" />
+          <p class="auth-error" id="create-error"></p>
+          <button class="auth-btn" id="create-next-btn">Continue</button>
+        </div>
+      </div>
+
+      <div id="setup-password" class="setup-screen">
+        <div class="auth-card glass-panel setup-card">
+          <p class="setup-step-label">Step 2 of 7</p>
+          <h1 class="auth-title">Secure your account</h1>
+          <p class="auth-subtitle">Add a password now, or set one later from your Profile.</p>
+          <label class="auth-label">Password</label>
+          <input class="auth-input" id="password-input" type="password" placeholder="Choose a password" />
+          <label class="auth-label">Confirm password</label>
+          <input class="auth-input" id="password-confirm-input" type="password" placeholder="Confirm password" />
+          <p class="auth-error" id="password-error"></p>
+          <button class="auth-btn" id="password-save-btn">Save password</button>
+          <button class="auth-btn-secondary" id="password-skip-btn">Do it later</button>
+        </div>
+      </div>
+
+      <div id="setup-recovery" class="setup-screen">
+        <div class="auth-card glass-panel setup-card">
+          <p class="setup-step-label">Step 3 of 7</p>
+          <h1 class="auth-title">Save your recovery code</h1>
+          <p class="auth-subtitle">If you forget your password, you'll need this code. It won't be shown again.</p>
+          <div class="recovery-code-box" id="recovery-code-text"></div>
+          <button class="auth-btn-secondary" id="recovery-copy-btn">Copy code</button>
+          <p class="setup-copy-feedback" id="recovery-copy-feedback"></p>
+          <button class="auth-btn" id="recovery-continue-btn">I've saved it — Continue</button>
+        </div>
+      </div>
+
+      <div id="setup-theme" class="setup-screen">
+        <div class="auth-card glass-panel setup-card">
+          <p class="setup-step-label">Step 4 of 7</p>
+          <h1 class="auth-title">Pick a theme</h1>
+          <p class="auth-subtitle">You can always change this later in Settings.</p>
+          <div class="setup-theme-grid" id="setup-theme-grid">
+            <button class="setup-theme-btn active" data-theme-value="default">
+              <span class="setup-theme-swatch setup-theme-swatch-default"></span>
+              Default
+            </button>
+            <button class="setup-theme-btn" data-theme-value="dark">
+              <span class="setup-theme-swatch setup-theme-swatch-dark"></span>
+              Dark
+            </button>
+            <button class="setup-theme-btn" data-theme-value="light">
+              <span class="setup-theme-swatch setup-theme-swatch-light"></span>
+              Light
+            </button>
+          </div>
+          <button class="auth-btn" id="setup-theme-next-btn">Continue</button>
+        </div>
+      </div>
+
+      <div id="setup-cosmo" class="setup-screen">
+        <div class="auth-card glass-panel setup-card">
+          <p class="setup-step-label">Step 5 of 7</p>
+          <h1 class="auth-title">Meet Cosmo</h1>
+          <p class="auth-subtitle">Cosmo is an optional desktop buddy who can float around and help with quizzes. You can change this anytime in the Cosmo app.</p>
+          <label class="setup-cosmo-toggle-row">
+            <span>Enable Cosmo now</span>
+            <input type="checkbox" id="setup-cosmo-toggle" />
+          </label>
+          <button class="auth-btn" id="setup-cosmo-next-btn">Continue</button>
+        </div>
+      </div>
+
+      <div id="setup-tour-choice" class="setup-screen">
+        <div class="auth-card glass-panel setup-card">
+          <p class="setup-step-label">Step 6 of 7</p>
+          <h1 class="auth-title">Take the Welcome Tour?</h1>
+          <p class="auth-subtitle">See how the wallpapers, quizzes, Cosmo, and Kiwo's voice mode work — takes about a minute.</p>
+          <button class="auth-btn" id="setup-tour-start-btn">Take the tour</button>
+          <button class="auth-btn-secondary" id="setup-tour-skip-btn">Skip for now</button>
+        </div>
+      </div>
+
+      <div id="setup-tour" class="setup-screen">
+        <div class="auth-card glass-panel setup-card setup-tour-card">
+          <p class="setup-step-label" id="tour-slide-label">Tour 1 of 5</p>
+          <div class="tour-preview" id="tour-preview"></div>
+          <h1 class="auth-title" id="tour-slide-title"></h1>
+          <p class="auth-subtitle" id="tour-slide-body"></p>
+          <div class="tour-nav-row">
+            <button class="auth-btn-secondary" id="tour-back-btn">Back</button>
+            <button class="auth-btn" id="tour-next-btn">Next</button>
+          </div>
+          <button class="auth-link-btn" id="tour-exit-btn">Skip tour</button>
+        </div>
+      </div>
+
+      <div id="setup-finish" class="setup-screen">
+        <div class="auth-card glass-panel setup-card">
+          <p class="setup-step-label">Step 7 of 7</p>
+          <div class="setup-ankh">&#9765;</div>
+          <h1 class="auth-title" id="setup-finish-title">You're all set!</h1>
+          <p class="auth-subtitle">Your account is ready. Time to start exploring ancient Egypt.</p>
+          <button class="auth-btn" id="setup-finish-btn">Enter Egypt Academy</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="auth-login" class="auth-view" style="display:none;">
+      <div class="auth-card glass-panel">
+        <h1 class="auth-title">Welcome back</h1>
+        <p class="auth-subtitle" id="login-subtitle">Enter your password to continue</p>
+        <label class="auth-label">Password</label>
+        <input class="auth-input" id="login-password-input" type="password" placeholder="Password" />
+        <p class="auth-error" id="login-error"></p>
+        <button class="auth-btn" id="login-btn">Log in</button>
+        <button class="auth-link-btn" id="forgot-password-btn">Forgot password?</button>
+      </div>
+    </div>
+
+    <div id="auth-forgot" class="auth-view" style="display:none;">
+      <div class="auth-card glass-panel">
+        <h1 class="auth-title">Reset your password</h1>
+        <p class="auth-subtitle">
+          Open the <strong>Alpaca Recovery Suite</strong>, enter your student
+          name and recovery code, then drop the generated file below.
+        </p>
+        <div class="auth-file-drop" id="recovery-drop-zone">
+          Drop your <code>egypt-academy-recovery.json</code> file here, or click to choose it
+          <input type="file" id="recovery-file-input" accept=".json" style="display:none;" />
+        </div>
+        <p class="auth-error" id="forgot-error"></p>
+
+        <div id="forgot-reset-section" style="display:none;">
+          <label class="auth-label">New password</label>
+          <input class="auth-input" id="new-password-input" type="password" placeholder="New password" />
+          <label class="auth-label">Confirm new password</label>
+          <input class="auth-input" id="new-password-confirm-input" type="password" placeholder="Confirm new password" />
+          <button class="auth-btn" id="reset-password-btn">Reset password</button>
+        </div>
+
+        <button class="auth-link-btn" id="back-to-login-btn">Back to login</button>
+      </div>
+    </div>
+
+    <div id="auth-recovery-standalone" class="auth-view" style="display:none;">
+      <div class="auth-card glass-panel">
+        <h1 class="auth-title">Your new recovery code</h1>
+        <p class="auth-subtitle">Save this — it replaces your old recovery code and won't be shown again.</p>
+        <div class="recovery-code-box" id="recovery-code-text-standalone"></div>
+        <button class="auth-btn-secondary" id="recovery-copy-standalone-btn">Copy code</button>
+        <p class="setup-copy-feedback" id="recovery-copy-standalone-feedback"></p>
+        <button class="auth-btn" id="recovery-standalone-continue-btn">I've saved it — continue</button>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ============ MAIN APP (hidden until unlocked) ============ -->
+  <div id="main-app" style="display:none;">
+
+    <nav class="topbar">
+      <a class="brand" href="#" onclick="return false;">
+        <span class="ankh">&#9765;</span> Egypt Academy
+      </a>
+      <div class="search-wrap search-wrap-offset">
+        <input type="text" id="app-search-input" class="search-input" placeholder="Search apps, lessons, quizzes..." autocomplete="off" />
+        <div class="search-results" id="search-results" style="display:none;"></div>
+        <p class="search-processing" id="search-processing" style="display:none;">Processing...</p>
+      </div>
+      <button class="kiwo-launcher-btn" id="kiwo-launcher-btn" aria-label="Open Kiwo" draggable="false">
+        <img src="assets/icons/kiwo.jpg" alt="Kiwo" draggable="false" />
+      </button>
+      <ul class="nav-links">
+        <li><button data-view="view-dashboard" class="active">Dashboard</button></li>
+        <li><button data-view="view-quizzes">Quizzes</button></li>
+        <li><button data-view="view-cosmo">Cosmo</button></li>
+        <li><button data-view="view-profile">Profile</button></li>
+        <li><button data-view="view-settings">Settings</button></li>
+        <li id="devtools-nav-item" style="display:none;"><button data-view="view-devtools">Dev-Tools</button></li>
+        <li id="credits-nav-item" style="display:none;"><button data-view="view-credits" id="credits-nav-btn">Credits</button></li>
+      </ul>
+      <button class="mobile-search-btn" id="mobile-search-btn" aria-label="Search">
+        <svg viewBox="0 0 24 24" width="20" height="20"><path fill="currentColor" d="M15.5 14h-.79l-.28-.27a6.5 6.5 0 1 0-.7.7l.27.28v.79l5 5L20.49 19l-5-5zm-6 0A4.5 4.5 0 1 1 14 9.5 4.5 4.5 0 0 1 9.5 14z"/></svg>
+      </button>
+    </nav>
+
+    <!-- Mobile-only compact top notch: brand + Kiwo, replaces the full topbar on small screens -->
+    <div class="mobile-notch">
+      <span class="mobile-notch-brand"><span class="ankh">&#9765;</span> Egypt Academy</span>
+      <button class="mobile-notch-kiwo" id="mobile-notch-kiwo-btn" aria-label="Open Kiwo" draggable="false">
+        <img src="assets/icons/kiwo.jpg" alt="Kiwo" draggable="false" />
+      </button>
+    </div>
+
+    <!-- Mobile search sheet, slides up over the navbar -->
+    <div class="mobile-search-sheet" id="mobile-search-sheet">
+      <div class="mobile-search-sheet-inner">
+        <input type="text" id="mobile-search-input" class="search-input" placeholder="Search apps, lessons, quizzes..." autocomplete="off" />
+        <button class="mobile-search-close" id="mobile-search-close">&times;</button>
+      </div>
+      <div class="search-results" id="mobile-search-results" style="display:none;"></div>
+      <p class="search-processing" id="mobile-search-processing" style="display:none;">Processing...</p>
+    </div>
+
+    <!-- Mobile-only Samsung-style pill navbar -->
+    <nav class="mobile-navbar">
+      <button class="mobile-navbar-btn active" data-view="view-dashboard" aria-label="Dashboard">
+        <svg viewBox="0 0 24 24"><path fill="currentColor" d="M12 3 2 12h3v8h6v-6h2v6h6v-8h3z"/></svg>
+        <span>Home</span>
+      </button>
+      <button class="mobile-navbar-btn" data-view="view-quizzes" aria-label="Quizzes">
+        <svg viewBox="0 0 24 24"><path fill="currentColor" d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm1 17h-2v-2h2zm2.07-7.75-.9.92A3.4 3.4 0 0 0 13 14h-2v-.5a3.1 3.1 0 0 1 1.17-2.33l1.24-1.26A1.5 1.5 0 1 0 10.9 8.9L9.5 7.5a3.5 3.5 0 1 1 5.57 3.75z"/></svg>
+        <span>Quizzes</span>
+      </button>
+      <button class="mobile-navbar-btn" data-view="view-profile" aria-label="Profile">
+        <svg viewBox="0 0 24 24"><path fill="currentColor" d="M12 12a5 5 0 1 0-5-5 5 5 0 0 0 5 5zm0 2c-4 0-8 2-8 5v1h16v-1c0-3-4-5-8-5z"/></svg>
+        <span>Profile</span>
+      </button>
+      <button class="mobile-navbar-btn" id="mobile-more-btn" aria-label="More">
+        <svg viewBox="0 0 24 24"><circle cx="5" cy="12" r="2" fill="currentColor"/><circle cx="12" cy="12" r="2" fill="currentColor"/><circle cx="19" cy="12" r="2" fill="currentColor"/></svg>
+        <span>More</span>
+      </button>
+    </nav>
+
+    <!-- Mobile "More" sheet: settings, dev-tools, credits -->
+    <div class="mobile-more-sheet" id="mobile-more-sheet">
+      <button class="mobile-more-item" id="mobile-more-search">Search</button>
+      <button class="mobile-more-item" data-view="view-cosmo">Cosmo</button>
+      <button class="mobile-more-item" data-view="view-settings">Settings</button>
+      <button class="mobile-more-item" id="mobile-more-devtools" data-view="view-devtools" style="display:none;">Dev-Tools</button>
+      <button class="mobile-more-item" id="mobile-more-credits" data-view="view-credits" style="display:none;">Credits</button>
+      <button class="mobile-more-item mobile-more-cancel" id="mobile-more-cancel">Cancel</button>
+    </div>
+    <div class="mobile-more-backdrop" id="mobile-more-backdrop"></div>
+
+    <!-- KIWO VOICE OVERLAY (independent of view switching) -->
+    <div id="kiwo-voice-overlay" class="kiwo-voice-overlay" style="display:none;">
+      <div class="kiwo-voice-backdrop" id="kiwo-voice-backdrop"></div>
+      <div class="kiwo-voice-panel" id="kiwo-voice-panel">
+        <div class="kiwo-voice-orb" id="kiwo-voice-orb">
+          <span class="kiwo-wave-band kiwo-wave-band-1"></span>
+          <span class="kiwo-wave-band kiwo-wave-band-2"></span>
+          <span class="kiwo-wave-band kiwo-wave-band-3"></span>
+          <span class="kiwo-wave-band kiwo-wave-band-4"></span>
+        </div>
+        <p class="kiwo-voice-state" id="kiwo-voice-state">Listening…</p>
+        <p class="kiwo-voice-transcript" id="kiwo-voice-transcript"></p>
+        <div class="kiwo-voice-mode-pill" id="kiwo-voice-mode-pill"></div>
+      </div>
+    </div>
+
+    <section id="view-dashboard" class="view active">
+      <div class="dashboard">
+        <div class="dashboard-hero glass-panel">
+          <h1 id="dashboard-greeting">Explore Ancient Egypt</h1>
+          <p>Choose a wallpaper below, then click on the pyramids, the Nile, and the life around it to start a lesson.</p>
+        </div>
+        <div class="wallpaper-grid" id="wallpaper-grid"></div>
+        <div class="progress-panel glass-panel">
+          <h2>Your Progress</h2>
+          <div class="progress-list" id="progress-list"></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="view-scene" class="view"></section>
+    <section id="view-lesson" class="view"></section>
+
+    <section id="view-quizzes" class="view">
+      <div class="dashboard">
+        <div class="dashboard-hero glass-panel">
+          <h1>Quizzes</h1>
+          <p>Test what you've learned. Complete a lesson first for best results.</p>
+        </div>
+        <div class="wallpaper-grid" id="quiz-grid" style="grid-template-columns: repeat(3, 1fr);"></div>
+      </div>
+    </section>
+
+    <section id="view-cosmo" class="view">
+      <div class="lesson-host"><div class="glass-panel" id="cosmo-content"></div></div>
+    </section>
+    <section id="view-profile" class="view">
+      <div class="lesson-host"><div class="glass-panel" id="profile-content"></div></div>
+    </section>
+    <section id="view-settings" class="view">
+      <div class="lesson-host"><div class="glass-panel" id="settings-content"></div></div>
+    </section>
+    <section id="view-devtools" class="view">
+      <div class="lesson-host"><div class="glass-panel" id="devtools-content"></div></div>
+    </section>
+    <section id="view-kiwo" class="view">
+      <div class="kiwo-app-host" id="kiwo-content"></div>
+    </section>
+    <section id="view-credits" class="view">
+      <div id="credits-content"></div>
+    </section>
+
+  </div>
+  <!-- COSMO — persistent floating buddy, lives outside the view-switching system -->
+  <div id="cosmo-root"></div>
+
+</div>
+
+<script src="js/auth.js"></script>
+<script src="data/lessons.js"></script>
+<script src="js/cosmo.js"></script>
+<script src="apps/kiwo/phrases/online-part1.js"></script>
+<script src="apps/kiwo/phrases/online-part2.js"></script>
+<script src="apps/kiwo/phrases/kiwo-brain.js"></script>
+<script src="js/kiwo.js"></script>
+<script src="js/credits.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

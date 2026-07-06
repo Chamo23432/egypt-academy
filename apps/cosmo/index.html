@@ -1,0 +1,46 @@
+<div class="cosmo-app">
+  <h2 class="cosmo-app-title">Cosmo</h2>
+  <p class="cosmo-app-intro">Your desktop buddy. Choose how he looks, what he can say, and whether he helps during quizzes.</p>
+
+  <label class="cosmo-toggle-row cosmo-master-toggle">
+    <span>Enable Cosmo</span>
+    <input type="checkbox" id="cosmo-enabled-toggle" />
+  </label>
+
+  <div class="cosmo-layout">
+    <div class="cosmo-frame-wrap">
+      <div class="cosmo-frame-slot" id="cosmo-frame-slot"></div>
+      <span class="cosmo-frame-label">Cosmo</span>
+    </div>
+
+    <div class="cosmo-controls">
+      <h3 class="cosmo-heading">Theme &amp; personality</h3>
+      <div class="cosmo-theme-grid" id="cosmo-theme-grid"></div>
+
+      <div class="cosmo-slider-row" id="silly-slider-row" style="display:none;">
+        <label for="cosmo-silly-slider">How silly is he?</label>
+        <input type="range" id="cosmo-silly-slider" min="0" max="100" value="50" />
+      </div>
+
+      <h3 class="cosmo-heading">Size</h3>
+      <div class="cosmo-slider-row">
+        <label for="cosmo-size-slider">Cosmo's size</label>
+        <input type="range" id="cosmo-size-slider" min="36" max="96" value="56" />
+      </div>
+
+      <h3 class="cosmo-heading">Behavior</h3>
+      <label class="cosmo-toggle-row">
+        <span>Let Cosmo talk (idle chatter, hints)</span>
+        <input type="checkbox" id="cosmo-sounds-toggle" />
+      </label>
+      <label class="cosmo-toggle-row">
+        <span>Let Cosmo help during quizzes</span>
+        <input type="checkbox" id="cosmo-quizhelp-toggle" />
+      </label>
+    </div>
+  </div>
+
+  <button class="cosmo-save-btn" id="cosmo-save-btn">Save</button>
+  <button class="cosmo-reset-btn" id="cosmo-reset-btn">Reset to defaults</button>
+  <p class="cosmo-feedback" id="cosmo-feedback"></p>
+</div>

@@ -1,0 +1,51 @@
+<div class="settings-app">
+  <h2 class="settings-title">Settings</h2>
+
+  <div class="settings-section">
+    <h3 class="settings-heading">Theme</h3>
+    <div class="theme-options">
+      <button class="theme-btn" data-theme-value="default">
+        <span class="theme-swatch theme-swatch-default"></span>
+        Default
+      </button>
+      <button class="theme-btn" data-theme-value="dark">
+        <span class="theme-swatch theme-swatch-dark"></span>
+        Dark
+      </button>
+      <button class="theme-btn" data-theme-value="light">
+        <span class="theme-swatch theme-swatch-light"></span>
+        Light
+      </button>
+    </div>
+  </div>
+
+  <div class="settings-section">
+    <h3 class="settings-heading">Lesson hotspots</h3>
+    <label class="settings-toggle-row">
+      <span>Show hotspot labels always (not just on hover)</span>
+      <input type="checkbox" id="setting-always-labels" />
+    </label>
+    <label class="settings-toggle-row">
+      <span>Reduce motion (disable pulsing hotspots)</span>
+      <input type="checkbox" id="setting-reduce-motion" />
+    </label>
+  </div>
+
+  <div class="settings-section">
+    <h3 class="settings-heading">Preferences</h3>
+    <button class="settings-btn-secondary" id="reset-settings-btn">Reset settings to defaults</button>
+  </div>
+
+  <div class="settings-section">
+    <h3 class="settings-heading">Progress</h3>
+    <button class="settings-danger-btn" id="reset-progress-btn">Reset all lesson &amp; quiz progress</button>
+  </div>
+
+  <div class="settings-section">
+    <h3 class="settings-heading">Danger zone</h3>
+    <p class="settings-note">Deleting your account removes your name, password, recovery code, and all progress from this browser. This cannot be undone.</p>
+    <button class="settings-danger-btn" id="delete-account-btn">Delete account</button>
+  </div>
+
+  <p class="settings-feedback" id="settings-feedback"></p>
+</div>

@@ -1,0 +1,45 @@
+<div class="devtools-app">
+  <div id="devtools-locked-view">
+    <h2 class="devtools-title">Dev-Tools</h2>
+    <p class="devtools-warning">This area is for development/testing only. Enter the dev password to continue.</p>
+    <input class="devtools-lock-input" id="devtools-password-input" type="password" placeholder="Dev password" />
+    <button class="devtools-btn" id="devtools-unlock-btn">Unlock</button>
+    <p class="devtools-feedback" id="devtools-lock-feedback"></p>
+  </div>
+
+  <div id="devtools-unlocked-view" style="display:none;">
+    <h2 class="devtools-title">Dev-Tools</h2>
+    <p class="devtools-warning">Changes here affect your saved progress and account directly. Use with care.</p>
+
+    <div class="devtools-section">
+      <h3 style="margin:0 0 0.6rem;font-family:var(--font-ui);font-size:0.9rem;">1. Complete all lessons</h3>
+      <button class="devtools-btn" id="dt-complete-lessons">Mark all lessons complete</button>
+    </div>
+
+    <div class="devtools-section">
+      <h3 style="margin:0 0 0.6rem;font-family:var(--font-ui);font-size:0.9rem;">2. Complete all quizzes</h3>
+      <button class="devtools-btn" id="dt-complete-quizzes">Mark all quizzes complete</button>
+    </div>
+
+    <div class="devtools-section">
+      <h3 style="margin:0 0 0.6rem;font-family:var(--font-ui);font-size:0.9rem;">3. Reset all progress</h3>
+      <button class="devtools-btn" id="dt-reset-progress">Reset lesson &amp; quiz progress</button>
+    </div>
+
+    <div class="devtools-section">
+      <h3 style="margin:0 0 0.6rem;font-family:var(--font-ui);font-size:0.9rem;">4. Force-enable Cosmo</h3>
+      <button class="devtools-btn" id="dt-force-cosmo">Turn Cosmo on instantly</button>
+    </div>
+
+    <div class="devtools-section">
+      <h3 style="margin:0 0 0.6rem;font-family:var(--font-ui);font-size:0.9rem;">5. Dump saved data</h3>
+      <button class="devtools-btn" id="dt-dump-data">Print all localStorage to console</button>
+    </div>
+
+    <div class="devtools-section">
+      <button class="devtools-btn devtools-btn-lock" id="dt-lock-btn">Lock Dev-Tools</button>
+    </div>
+
+    <p class="devtools-feedback" id="devtools-feedback"></p>
+  </div>
+</div>

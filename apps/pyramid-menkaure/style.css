@@ -1,0 +1,71 @@
+.menkaure-title {
+  font-family: var(--font-display);
+  color: var(--gold-400);
+  margin-top: 0;
+}
+.menkaure-intro {
+  color: var(--text-300);
+  line-height: 1.6;
+}
+.menkaure-facts {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.75rem;
+  margin: 1.5rem 0;
+}
+.menkaure-fact-card {
+  background: var(--glass-bg-light);
+  border: 1px solid var(--glass-border);
+  border-radius: 12px;
+  padding: 1rem 0.5rem;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+.fact-number {
+  font-family: var(--font-display);
+  font-size: 1.4rem;
+  color: var(--gold-400);
+}
+.fact-label {
+  font-family: var(--font-ui);
+  font-size: 0.75rem;
+  color: var(--text-300);
+}
+
+.menkaure-quiz {
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--glass-border);
+}
+.quiz-question {
+  font-family: var(--font-ui);
+  font-weight: 500;
+}
+.quiz-options {
+  display: flex;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+}
+.quiz-btn {
+  font-family: var(--font-ui);
+  background: var(--glass-bg-light);
+  border: 1px solid var(--glass-border);
+  color: var(--text-100);
+  padding: 0.6rem 1rem;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.quiz-btn:hover { background: rgba(240,193,75,0.25); }
+.quiz-btn.correct { background: rgba(46,160,90,0.35); border-color: #2ea05a; }
+.quiz-btn.wrong { background: rgba(193,68,14,0.35); border-color: var(--carnelian-500); }
+
+.quiz-feedback {
+  margin-top: 0.75rem;
+  font-family: var(--font-ui);
+  font-size: 0.9rem;
+  color: var(--gold-400);
+  min-height: 1.2em;
+}
