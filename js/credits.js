@@ -6,6 +6,7 @@ const Credits = (() => {
   const UNLOCK_KEY = "egyptAcademyCreditsUnlocked";
   let audioEl = null;
   let scrollAnimFrame = null;
+  let cameoFadeCheckFrame = null;
 
   function allLessonsComplete() {
     try {
@@ -176,6 +177,60 @@ const Credits = (() => {
     `;
   }
 
+  // Shows the 5 themed Cosmos "building" the certificate, then each says
+  // bye in a speech bubble and disappears one at a time, finally leaving
+  // just the certificate on screen.
+  function runCertificateBuildSequence(certificateWrap, onDone) {
+    const themeKeys = ["classic", "sunset", "nile", "crimson", "moonlight"];
+    const cosmoHtml = themeKeys.map((key, i) => {
+      const theme = (window.Cosmo && window.Cosmo.THEMES) ? window.Cosmo.THEMES[key] : null;
+      const inner = window.Cosmo ? window.Cosmo.spriteInnerHtml() : "";
+      const bodyColor = theme ? theme.bodyColor : "#f0c14b";
+      const accentColor = theme ? theme.accentColor : "#0d1b2a";
+      const mood = theme ? theme.mood : "happy";
+      return `
+        <div class="certificate-build-cosmo" id="build-cosmo-${i}" style="--build-order:${i};">
+          <div class="cosmo-sprite credits-cosmo-sprite certificate-build-sprite" data-mood="${mood}" style="--cosmo-body:${bodyColor}; --cosmo-accent:${accentColor};">${inner}</div>
+          <div class="certificate-build-bubble" id="build-bubble-${i}">Bye!</div>
+        </div>
+      `;
+    }).join("");
+
+    certificateWrap.innerHTML = `
+      <div class="certificate-build-stage" id="certificate-build-stage">
+        <div class="certificate-build-cosmo-row">${cosmoHtml}</div>
+        ${buildCertificateHtml()}
+      </div>
+    `;
+    requestAnimationFrame(() => certificateWrap.classList.add("certificate-visible"));
+
+    const stage = document.getElementById("certificate-build-stage");
+    const card = document.getElementById("certificate-card");
+    if (card) card.classList.add("certificate-building");
+
+    // Let them "assemble" it briefly, then each waves and fades out in turn.
+    setTimeout(() => {
+      if (card) card.classList.add("certificate-built");
+      themeKeys.forEach((_, i) => {
+        setTimeout(() => {
+          const bubble = document.getElementById(`build-bubble-${i}`);
+          const cosmoEl = document.getElementById(`build-cosmo-${i}`);
+          if (bubble) bubble.classList.add("certificate-bubble-visible");
+          setTimeout(() => {
+            if (cosmoEl) cosmoEl.classList.add("certificate-build-cosmo-gone");
+          }, 900);
+        }, i * 700);
+      });
+
+      const totalDelay = themeKeys.length * 700 + 1200;
+      setTimeout(() => {
+        if (stage) stage.classList.add("certificate-build-stage-cleared");
+        wireCertificateButtons();
+        onDone && onDone();
+      }, totalDelay);
+    }, 900);
+  }
+
   function stopMusic(fadeOutSeconds) {
     if (!audioEl) return;
     if (!fadeOutSeconds) {
@@ -234,6 +289,11 @@ const Credits = (() => {
       </div>
     `;
 
+    // Hide the real cursor-following Cosmo for the whole credits sequence,
+    // the same way his settings app tucks him away — he comes back via
+    // teardown()/exitFrame() when the user leaves this screen.
+    if (window.Cosmo) window.Cosmo.enterFrame();
+
     const root = document.getElementById("credits-root");
     const viewport = document.getElementById("credits-viewport");
     const track = document.getElementById("credits-track");
@@ -252,6 +312,8 @@ const Credits = (() => {
       // not play automatically in that case, everything else still works.
     });
 
+    watchCameoFadeOut(viewport);
+
     startScrolling(track, viewport, () => {
       // Hold the final screen briefly, then fade to black
       setTimeout(() => {
@@ -261,15 +323,40 @@ const Credits = (() => {
           // Hide the scrolling credits entirely first so none of that text
           // can show through behind/around the certificate card.
           viewport.style.display = "none";
-          certificateWrap.innerHTML = buildCertificateHtml();
-          setTimeout(() => {
+          runCertificateBuildSequence(certificateWrap, () => {
             fadeOverlay.classList.remove("credits-fade-active");
-            certificateWrap.classList.add("certificate-visible");
-            wireCertificateButtons();
-          }, 600);
+          });
         }, 3000);
       }, 1800);
     });
+  }
+
+  // Fades out each of the 5 spread-out Cosmo cameos individually once the
+  // scroll has carried them well past the middle of the viewport (i.e. the
+  // user has had a chance to see them). Does NOT affect the farewell lineup
+  // at the very end.
+  function watchCameoFadeOut(viewport) {
+    const cameos = Array.from(document.querySelectorAll(".credits-cosmo-cameo"));
+    if (!cameos.length) return;
+    const seen = new WeakSet();
+
+    function check() {
+      const viewportRect = viewport.getBoundingClientRect();
+      cameos.forEach(cameo => {
+        if (seen.has(cameo)) return;
+        const rect = cameo.getBoundingClientRect();
+        // Once a cameo's bottom edge has scrolled above roughly 35% of the
+        // viewport height, it's been "seen" — start its fade out.
+        if (rect.bottom < viewportRect.top + viewportRect.height * 0.35) {
+          seen.add(cameo);
+          cameo.classList.add("credits-cameo-fade-out");
+        }
+      });
+      if (seen.size < cameos.length) {
+        cameoFadeCheckFrame = requestAnimationFrame(check);
+      }
+    }
+    cameoFadeCheckFrame = requestAnimationFrame(check);
   }
 
   function wireCertificateButtons() {
@@ -349,6 +436,8 @@ const Credits = (() => {
   function teardown() {
     stopMusic(0);
     if (scrollAnimFrame) cancelAnimationFrame(scrollAnimFrame);
+    if (cameoFadeCheckFrame) cancelAnimationFrame(cameoFadeCheckFrame);
+    if (window.Cosmo) window.Cosmo.exitFrame();
   }
 
   return { checkUnlock, render, teardown };
