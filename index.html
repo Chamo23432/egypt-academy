@@ -12,6 +12,8 @@
   (function () {
     var t = localStorage.getItem("egyptAcademyTheme");
     if (t && t !== "default") document.documentElement.setAttribute("data-theme", t);
+    var ambient = localStorage.getItem("egyptAcademyAmbientLighting");
+    if (ambient === "true") document.documentElement.setAttribute("data-ambient", "true");
   })();
 </script>
 </head>
@@ -61,7 +63,7 @@
         <div class="auth-card glass-panel setup-card">
           <p class="setup-step-label">Step 2 of 7</p>
           <h1 class="auth-title">Secure your account</h1>
-          <p class="auth-subtitle">Add a password now, or set one later from your Profile.</p>
+          <p class="auth-subtitle">Add a password now, or set one later from Settings.</p>
           <label class="auth-label">Password</label>
           <input class="auth-input" id="password-input" type="password" placeholder="Choose a password" />
           <label class="auth-label">Confirm password</label>
@@ -221,13 +223,30 @@
         <img src="assets/icons/kiwo.jpg" alt="Kiwo" draggable="false" />
       </button>
       <ul class="nav-links">
-        <li><button data-view="view-dashboard" class="active">Dashboard</button></li>
-        <li><button data-view="view-quizzes">Quizzes</button></li>
-        <li><button data-view="view-cosmo">Cosmo</button></li>
-        <li><button data-view="view-profile">Profile</button></li>
-        <li><button data-view="view-settings">Settings</button></li>
-        <li id="devtools-nav-item" style="display:none;"><button data-view="view-devtools">Dev-Tools</button></li>
-        <li id="credits-nav-item" style="display:none;"><button data-view="view-credits" id="credits-nav-btn">Credits</button></li>
+        <li><button data-view="view-dashboard" class="active">
+          <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M9 22V12h6v10"/></svg>
+          Home
+        </button></li>
+        <li><button data-view="view-quizzes">
+          <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 1 1 5.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></svg>
+          Quizzes
+        </button></li>
+        <li><button data-view="view-cosmo">
+          <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l1.9 4.5L18 9l-4.1 1.5L12 15l-1.9-4.5L6 9l4.1-1.5z"/><path d="M19 15l.9 2 2.1.8-2.1.8L19 20l-.9-2-2.1-.8 2.1-.8z"/></svg>
+          Cosmo
+        </button></li>
+        <li><button data-view="view-settings">
+          <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+          Settings
+        </button></li>
+        <li id="devtools-nav-item" style="display:none;"><button data-view="view-devtools">
+          <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+          Dev-Tools
+        </button></li>
+        <li id="credits-nav-item" style="display:none;"><button data-view="view-credits" id="credits-nav-btn">
+          <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="6"/><path d="M15.5 13.5L17 22l-5-3-5 3 1.5-8.5"/></svg>
+          Credits
+        </button></li>
       </ul>
       <button class="mobile-search-btn" id="mobile-search-btn" aria-label="Search">
         <svg viewBox="0 0 24 24" width="20" height="20"><path fill="currentColor" d="M15.5 14h-.79l-.28-.27a6.5 6.5 0 1 0-.7.7l.27.28v.79l5 5L20.49 19l-5-5zm-6 0A4.5 4.5 0 1 1 14 9.5 4.5 4.5 0 0 1 9.5 14z"/></svg>
@@ -262,9 +281,9 @@
         <svg viewBox="0 0 24 24"><path fill="currentColor" d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm1 17h-2v-2h2zm2.07-7.75-.9.92A3.4 3.4 0 0 0 13 14h-2v-.5a3.1 3.1 0 0 1 1.17-2.33l1.24-1.26A1.5 1.5 0 1 0 10.9 8.9L9.5 7.5a3.5 3.5 0 1 1 5.57 3.75z"/></svg>
         <span>Quizzes</span>
       </button>
-      <button class="mobile-navbar-btn" data-view="view-profile" aria-label="Profile">
-        <svg viewBox="0 0 24 24"><path fill="currentColor" d="M12 12a5 5 0 1 0-5-5 5 5 0 0 0 5 5zm0 2c-4 0-8 2-8 5v1h16v-1c0-3-4-5-8-5z"/></svg>
-        <span>Profile</span>
+      <button class="mobile-navbar-btn" data-view="view-settings" aria-label="Settings">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+        <span>Settings</span>
       </button>
       <button class="mobile-navbar-btn" id="mobile-more-btn" aria-label="More">
         <svg viewBox="0 0 24 24"><circle cx="5" cy="12" r="2" fill="currentColor"/><circle cx="12" cy="12" r="2" fill="currentColor"/><circle cx="19" cy="12" r="2" fill="currentColor"/></svg>
@@ -328,9 +347,6 @@
 
     <section id="view-cosmo" class="view">
       <div class="lesson-host"><div class="glass-panel" id="cosmo-content"></div></div>
-    </section>
-    <section id="view-profile" class="view">
-      <div class="lesson-host"><div class="glass-panel" id="profile-content"></div></div>
     </section>
     <section id="view-settings" class="view">
       <div class="lesson-host"><div class="glass-panel" id="settings-content"></div></div>

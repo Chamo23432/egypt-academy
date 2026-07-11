@@ -2071,3 +2071,102 @@ input { caret-color: var(--gold-400); }
 .certificate-build-stage-cleared .certificate-build-cosmo-row {
   display: none;
 }
+
+/* ============ Nav icons (Lucide-style inline SVGs) ============ */
+.nav-links button {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+.nav-icon {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+}
+
+/* ============ Kiwo launcher affordance — make it read as a button ============ */
+.kiwo-launcher-btn {
+  box-shadow: 0 2px 8px rgba(0,0,0,0.25), inset 0 0 0 1px rgba(240,193,75,0.08);
+}
+.kiwo-launcher-btn::after {
+  content: "";
+  position: absolute;
+  inset: -4px;
+  border-radius: 50%;
+  border: 1px solid transparent;
+  transition: border-color 0.25s ease, transform 0.25s ease;
+  pointer-events: none;
+}
+.kiwo-launcher-btn:hover::after {
+  border-color: rgba(240,193,75,0.4);
+  transform: scale(1.08);
+}
+.kiwo-launcher-btn:active {
+  transform: scale(0.94);
+}
+.mobile-notch-kiwo:active { transform: scale(0.9); }
+
+/* ============ Ambient lighting mode — cozy, warm, dim, not gamey ============ */
+[data-ambient="true"] {
+  --night-900: #1a1210;
+  --night-800: #241a16;
+  --lapis-600: #3a2a1c;
+  --glass-bg: rgba(36, 24, 18, 0.55);
+  --glass-bg-light: rgba(255, 200, 140, 0.05);
+  --glass-border: rgba(230, 170, 90, 0.25);
+  --gold-400: #e8a854;
+  --gold-500: #d4913c;
+  --carnelian-500: #b5551f;
+  --text-100: #f2e2d0;
+  --text-300: #c9ac8f;
+}
+[data-ambient="true"] body {
+  background: radial-gradient(circle at 50% 0%, rgba(212, 145, 60, 0.06), transparent 60%);
+}
+[data-ambient="true"] .glass-panel,
+[data-ambient="true"] .auth-card,
+[data-ambient="true"] .kiwo-main,
+[data-ambient="true"] .kiwo-sidebar {
+  box-shadow: 0 8px 32px rgba(0,0,0,0.45), 0 0 40px rgba(212,145,60,0.04);
+}
+
+/* Ambient lighting transition overlay: fade out, spinner + progress, fade back in */
+.ambient-transition-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 6000;
+  background: #000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1.2rem;
+  opacity: 0;
+  transition: opacity 0.6s ease;
+  pointer-events: none;
+}
+.ambient-transition-overlay.ambient-transition-active {
+  opacity: 1;
+  pointer-events: auto;
+}
+.ambient-transition-spinner {
+  width: 44px; height: 44px;
+  border-radius: 50%;
+  border: 3px solid rgba(240,193,75,0.2);
+  border-top-color: var(--gold-400, #e8a854);
+  animation: ambient-spin 0.9s linear infinite;
+}
+@keyframes ambient-spin { to { transform: rotate(360deg); } }
+.ambient-transition-progress {
+  width: min(220px, 60vw);
+  height: 4px;
+  border-radius: 999px;
+  background: rgba(255,255,255,0.12);
+  overflow: hidden;
+}
+.ambient-transition-bar {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, #d4913c, #e8a854);
+  border-radius: 999px;
+}

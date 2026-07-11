@@ -63,6 +63,8 @@ const EgyptAuth = (() => {
     localStorage.removeItem("egyptAcademyDevToolsRevealed");
     localStorage.removeItem("egyptAcademyCreditsUnlocked");
     localStorage.removeItem("egyptAcademyProgress");
+    localStorage.removeItem("kiwoConversations");
+    localStorage.removeItem("cosmoSettings");
     return account;
   }
 

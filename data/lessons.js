@@ -82,7 +82,7 @@ window.EGYPT_ACADEMY_DATA = {
     { label: "Dashboard", type: "view", target: "view-dashboard" },
     { label: "Quizzes", type: "view", target: "view-quizzes" },
     { label: "Cosmo", type: "view", target: "view-cosmo" },
-    { label: "Profile", type: "view", target: "view-profile" },
+    { label: "Profile", type: "view", target: "view-settings" },
     { label: "Settings", type: "view", target: "view-settings" },
     { label: "Kiwo", type: "view", target: "view-kiwo" },
     { label: "Giza Plateau (pyramids)", type: "scene", target: "pyramids" },

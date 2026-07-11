@@ -2,6 +2,19 @@
   <h2 class="settings-title">Settings</h2>
 
   <div class="settings-section">
+    <h3 class="settings-heading">Account</h3>
+    <label class="profile-label">Student name</label>
+    <input class="profile-input" id="profile-name" type="text" />
+    <div id="profile-pass-section">
+      <label class="profile-label" id="profile-pass-label">Password</label>
+      <input class="profile-input" id="profile-pass" type="password" placeholder="New password" />
+      <input class="profile-input" id="profile-pass-confirm" type="password" placeholder="Confirm password" />
+    </div>
+    <button class="profile-save-btn" id="profile-save">Save account changes</button>
+    <p class="profile-feedback" id="profile-feedback"></p>
+  </div>
+
+  <div class="settings-section">
     <h3 class="settings-heading">Theme</h3>
     <div class="theme-options">
       <button class="theme-btn" data-theme-value="default">
@@ -17,6 +30,15 @@
         Light
       </button>
     </div>
+  </div>
+
+  <div class="settings-section">
+    <h3 class="settings-heading">Ambient Lighting</h3>
+    <p class="settings-note">A softer, warmer, cozier atmosphere across the whole app.</p>
+    <label class="settings-toggle-row">
+      <span>Enable ambient lighting</span>
+      <input type="checkbox" id="setting-ambient-lighting" />
+    </label>
   </div>
 
   <div class="settings-section">

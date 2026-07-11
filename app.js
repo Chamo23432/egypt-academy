@@ -42,7 +42,6 @@ const EgyptAcademy = (() => {
     if (viewId === "view-cosmo") loadContentApp("cosmo", "cosmo-content", () => {
       if (window.Cosmo) window.Cosmo.enterFrame();
     });
-    if (viewId === "view-profile") loadContentApp("profile", "profile-content", initProfileApp);
     if (viewId === "view-settings") loadContentApp("settings", "settings-content");
     if (viewId === "view-devtools") loadContentApp("devtools", "devtools-content");
     if (viewId === "view-kiwo") loadContentApp("kiwo", "kiwo-content");
@@ -409,33 +408,6 @@ const EgyptAcademy = (() => {
   }
 
   /* ---------- Profile app hook ---------- */
-  function initProfileApp() {
-    const acc = AUTH.getAccount();
-    const nameInput = document.getElementById("profile-name");
-    const passInput = document.getElementById("profile-pass");
-    const passConfirm = document.getElementById("profile-pass-confirm");
-    const feedback = document.getElementById("profile-feedback");
-    if (!nameInput) return;
-    nameInput.value = acc ? acc.name : "";
-
-    document.getElementById("profile-save").onclick = () => {
-      const newName = nameInput.value.trim();
-      if (newName) AUTH.updateName(newName);
-
-      const pass = passInput.value;
-      const confirm = passConfirm.value;
-      if (pass || confirm) {
-        if (pass.length < 4) { feedback.textContent = "Password must be at least 4 characters."; return; }
-        if (pass !== confirm) { feedback.textContent = "Passwords don't match."; return; }
-        AUTH.setPassword(pass); // note: recovery code silently regenerated
-      }
-      feedback.textContent = "Saved.";
-      passInput.value = "";
-      passConfirm.value = "";
-      renderDashboardGreeting();
-    };
-  }
-
   /* ---------- Dashboard ---------- */
   function renderDashboardGreeting() {
     const acc = AUTH.getAccount();
