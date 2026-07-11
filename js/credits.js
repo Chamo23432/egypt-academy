@@ -75,7 +75,6 @@ const Credits = (() => {
       "\u201cEchoes of Possibility\u201d — free ambient music for content creators"
     ]},
     { title: "Fonts", lines: ["Cinzel", "Frank Ruhl Libre", "Inter"] },
-    { isKiwoCameo: true },
     { title: "Icons", lines: ["Custom iconography designed for Egypt Academy"] },
     { title: "Open Source Libraries", lines: ["No third-party runtime libraries — built with vanilla JavaScript"] },
     { isCosmoCameo: true, theme: "moonlight" },
@@ -108,14 +107,6 @@ const Credits = (() => {
         return `
           <div class="credits-section credits-cosmo-cameo ${direction}">
             <div class="cosmo-sprite credits-cosmo-sprite" data-mood="${mood}" style="--cosmo-body:${bodyColor}; --cosmo-accent:${accentColor};">${inner}</div>
-          </div>
-        `;
-      }
-      if (sec.isKiwoCameo) {
-        const direction = Math.random() < 0.5 ? "credits-cameo-float-ltr" : "credits-cameo-float-rtl";
-        return `
-          <div class="credits-section credits-kiwo-cameo ${direction}">
-            <img src="assets/icons/kiwo.jpg" alt="Kiwo" class="credits-kiwo-sprite" />
           </div>
         `;
       }
@@ -328,7 +319,7 @@ const Credits = (() => {
   // user has had a chance to see them). Does NOT affect the farewell lineup
   // at the very end.
   function watchCameoFadeOut(viewport) {
-    const cameos = Array.from(document.querySelectorAll(".credits-cosmo-cameo, .credits-kiwo-cameo"));
+    const cameos = Array.from(document.querySelectorAll(".credits-cosmo-cameo"));
     if (!cameos.length) return;
     const seen = new WeakSet();
 

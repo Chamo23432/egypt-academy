@@ -1944,13 +1944,11 @@ input { caret-color: var(--gold-400); }
 .credits-cosmo-sprite .cosmo-bob {
   animation: cosmo-bob 2.6s ease-in-out infinite;
 }
-.credits-cameo-float-ltr .cosmo-sprite,
-.credits-cameo-float-ltr .credits-kiwo-sprite {
-  animation: credits-float-ltr 6s ease-in-out infinite, cosmo-bob 2.6s ease-in-out infinite;
+.credits-cameo-float-ltr {
+  animation: credits-float-ltr 6s ease-in-out infinite;
 }
-.credits-cameo-float-rtl .cosmo-sprite,
-.credits-cameo-float-rtl .credits-kiwo-sprite {
-  animation: credits-float-rtl 6s ease-in-out infinite, cosmo-bob 2.6s ease-in-out infinite;
+.credits-cameo-float-rtl {
+  animation: credits-float-rtl 6s ease-in-out infinite;
 }
 @keyframes credits-float-ltr {
   0%, 100% { transform: translateX(-90px); }
@@ -1961,23 +1959,6 @@ input { caret-color: var(--gold-400); }
   50% { transform: translateX(-90px); }
 }
 
-.credits-kiwo-cameo {
-  display: flex;
-  justify-content: center;
-  margin: 2.5rem 0;
-  opacity: 1;
-  transition: opacity 1.2s ease;
-}
-.credits-kiwo-cameo.credits-cameo-fade-out {
-  opacity: 0;
-}
-.credits-kiwo-sprite {
-  width: 56px;
-  height: 56px;
-  border-radius: 50%;
-  border: 2px solid var(--gold-400);
-  object-fit: cover;
-}
 
 /* Shared wave keyframe (used by the certificate build sequence) */
 @keyframes cosmo-farewell-wave {
