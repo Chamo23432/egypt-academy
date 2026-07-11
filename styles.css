@@ -2111,26 +2111,17 @@ input { caret-color: var(--gold-400); }
 .ambient-lighting-overlay {
   position: fixed;
   inset: 0;
-  z-index: 1;
+  z-index: 5000;
   pointer-events: none;
   opacity: 0;
   transition: opacity 1s ease;
   background:
-    radial-gradient(ellipse 70% 50% at 50% 0%, rgba(255, 170, 90, 0.10), transparent 60%),
-    radial-gradient(ellipse 90% 60% at 50% 100%, rgba(255, 140, 60, 0.06), transparent 65%);
-  mix-blend-mode: multiply;
+    radial-gradient(ellipse 80% 60% at 50% 0%, rgba(255, 176, 90, 0.16), transparent 65%),
+    radial-gradient(ellipse 100% 70% at 50% 100%, rgba(255, 120, 50, 0.14), transparent 70%),
+    linear-gradient(rgba(255, 150, 70, 0.05), rgba(255, 150, 70, 0.05));
 }
 [data-ambient="true"] .ambient-lighting-overlay {
   opacity: 1;
-}
-/* On dark-leaning themes, "multiply" would just darken things further —
-   use "screen" instead so the warmth actually shows as a glow, not a shadow. */
-[data-theme="dark"] .ambient-lighting-overlay,
-:root:not([data-theme]) .ambient-lighting-overlay {
-  mix-blend-mode: screen;
-  background:
-    radial-gradient(ellipse 70% 50% at 50% 0%, rgba(255, 170, 90, 0.07), transparent 60%),
-    radial-gradient(ellipse 90% 60% at 50% 100%, rgba(255, 140, 60, 0.05), transparent 65%);
 }
 /* Slight warm tint on panels/cards so the glow feels integrated, not just
    an overlay sitting on top — subtle, no color variable overrides. */
@@ -2138,7 +2129,7 @@ input { caret-color: var(--gold-400); }
 [data-ambient="true"] .auth-card,
 [data-ambient="true"] .kiwo-main,
 [data-ambient="true"] .kiwo-sidebar {
-  box-shadow: 0 8px 32px rgba(0,0,0,0.35), 0 0 44px rgba(255, 150, 70, 0.05);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.35), 0 0 44px rgba(255, 150, 70, 0.08);
 }
 
 /* Ambient lighting transition overlay: fade out, spinner + progress, fade back in */
@@ -3253,4 +3244,12 @@ input { caret-color: var(--gold-400); }
   font-size: 0.85rem;
   color: var(--gold-400);
   min-height: 1.2em;
+}
+
+.settings-icon, .devtools-icon, .cosmo-icon {
+  width: 16px;
+  height: 16px;
+  vertical-align: -3px;
+  margin-right: 0.4rem;
+  flex-shrink: 0;
 }

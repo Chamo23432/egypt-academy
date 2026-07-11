@@ -35,31 +35,30 @@
 
   /* ---------- Ambient Lighting ---------- */
   function playAmbientTransition(turningOn) {
-    const overlay = document.createElement("div");
-    overlay.className = "ambient-transition-overlay";
-    overlay.innerHTML = `
-      <div class="ambient-transition-spinner"></div>
-      <div class="ambient-transition-progress"><div class="ambient-transition-bar" id="ambient-progress-bar"></div></div>
-    `;
-    document.body.appendChild(overlay);
-    requestAnimationFrame(() => overlay.classList.add("ambient-transition-active"));
+    requestAnimationFrame(() => {
+      const overlay = document.createElement("div");
+      overlay.className = "ambient-transition-overlay";
+      overlay.innerHTML = `
+        <div class="ambient-transition-spinner"></div>
+        <div class="ambient-transition-progress"><div class="ambient-transition-bar" id="ambient-progress-bar"></div></div>
+      `;
+      document.body.appendChild(overlay);
+      requestAnimationFrame(() => overlay.classList.add("ambient-transition-active"));
 
-    const bar = overlay.querySelector("#ambient-progress-bar");
-    const durationMs = 5000;
-    const start = performance.now();
-    function tick(now) {
-      const pct = Math.min(100, ((now - start) / durationMs) * 100);
-      bar.style.width = pct + "%";
-      if (pct < 100) requestAnimationFrame(tick);
-    }
-    requestAnimationFrame(tick);
+      const bar = overlay.querySelector("#ambient-progress-bar");
+      const durationMs = 5000;
+      requestAnimationFrame(() => {
+        bar.style.transition = `width ${durationMs}ms linear`;
+        bar.style.width = "100%";
+      });
 
-    setTimeout(() => {
-      if (turningOn) document.documentElement.setAttribute("data-ambient", "true");
-      else document.documentElement.removeAttribute("data-ambient");
-      overlay.classList.remove("ambient-transition-active");
-      setTimeout(() => overlay.remove(), 600);
-    }, durationMs);
+      setTimeout(() => {
+        if (turningOn) document.documentElement.setAttribute("data-ambient", "true");
+        else document.documentElement.removeAttribute("data-ambient");
+        overlay.classList.remove("ambient-transition-active");
+        setTimeout(() => overlay.remove(), 600);
+      }, durationMs);
+    });
   }
 
   function applyAmbientImmediate(on) {
