@@ -75,6 +75,7 @@ const Credits = (() => {
       "\u201cEchoes of Possibility\u201d — free ambient music for content creators"
     ]},
     { title: "Fonts", lines: ["Cinzel", "Frank Ruhl Libre", "Inter"] },
+    { isKiwoCameo: true },
     { title: "Icons", lines: ["Custom iconography designed for Egypt Academy"] },
     { title: "Open Source Libraries", lines: ["No third-party runtime libraries — built with vanilla JavaScript"] },
     { isCosmoCameo: true, theme: "moonlight" },
@@ -84,8 +85,7 @@ const Credits = (() => {
     ]},
     { title: "Copyright", lines: [
       "\u00a9 " + new Date().getFullYear() + " Egypt Academy. All rights reserved."
-    ]},
-    { isCosmoFarewell: true }
+    ]}
   ];
 
   function buildCreditsHtml() {
@@ -104,26 +104,18 @@ const Credits = (() => {
         const bodyColor = theme ? theme.bodyColor : "#f0c14b";
         const accentColor = theme ? theme.accentColor : "#0d1b2a";
         const mood = theme ? theme.mood : "happy";
+        const direction = Math.random() < 0.5 ? "credits-cameo-float-ltr" : "credits-cameo-float-rtl";
         return `
-          <div class="credits-section credits-cosmo-cameo">
+          <div class="credits-section credits-cosmo-cameo ${direction}">
             <div class="cosmo-sprite credits-cosmo-sprite" data-mood="${mood}" style="--cosmo-body:${bodyColor}; --cosmo-accent:${accentColor};">${inner}</div>
           </div>
         `;
       }
-      if (sec.isCosmoFarewell) {
-        const themeKeys = ["classic", "sunset", "nile", "crimson", "moonlight"];
-        const cosmos = themeKeys.map(key => {
-          const theme = (window.Cosmo && window.Cosmo.THEMES) ? window.Cosmo.THEMES[key] : null;
-          const inner = window.Cosmo ? window.Cosmo.spriteInnerHtml() : "";
-          const bodyColor = theme ? theme.bodyColor : "#f0c14b";
-          const accentColor = theme ? theme.accentColor : "#0d1b2a";
-          const mood = theme ? theme.mood : "happy";
-          return `<div class="cosmo-sprite credits-cosmo-sprite credits-cosmo-farewell-sprite" data-mood="${mood}" style="--cosmo-body:${bodyColor}; --cosmo-accent:${accentColor};">${inner}</div>`;
-        }).join("");
+      if (sec.isKiwoCameo) {
+        const direction = Math.random() < 0.5 ? "credits-cameo-float-ltr" : "credits-cameo-float-rtl";
         return `
-          <div class="credits-section credits-farewell-section">
-            <p class="credits-farewell-caption">Until next time...</p>
-            <div class="credits-farewell-row">${cosmos}</div>
+          <div class="credits-section credits-kiwo-cameo ${direction}">
+            <img src="assets/icons/kiwo.jpg" alt="Kiwo" class="credits-kiwo-sprite" />
           </div>
         `;
       }
@@ -336,7 +328,7 @@ const Credits = (() => {
   // user has had a chance to see them). Does NOT affect the farewell lineup
   // at the very end.
   function watchCameoFadeOut(viewport) {
-    const cameos = Array.from(document.querySelectorAll(".credits-cosmo-cameo"));
+    const cameos = Array.from(document.querySelectorAll(".credits-cosmo-cameo, .credits-kiwo-cameo"));
     if (!cameos.length) return;
     const seen = new WeakSet();
 

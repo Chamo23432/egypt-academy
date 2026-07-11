@@ -35,6 +35,7 @@
         btn.classList.add(correct ? "correct" : "wrong");
         if (correct) score++;
         feedback.textContent = correct ? "Correct!" : "Not quite.";
+        if (window.Cosmo) window.Cosmo.reactTo(correct ? "quizCorrect" : "quizWrong");
         if (window.Cosmo) window.Cosmo.stopWatchingQuiz();
         nextBtn.style.display = "inline-block";
         nextBtn.textContent = current === QUESTIONS.length - 1 ? "See results" : "Next question";

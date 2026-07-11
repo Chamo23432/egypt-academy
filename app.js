@@ -21,6 +21,11 @@ const EgyptAcademy = (() => {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(progress));
     renderDashboardProgress();
     if (window.Credits) window.Credits.checkUnlock();
+    if (window.Cosmo) {
+      const allIds = [...(DATA.allLessonIds || []), ...((DATA.quizzes || []).map(q => q.id))];
+      const nowComplete = allIds.every(id => progress[id]);
+      window.Cosmo.reactTo(nowComplete ? "allComplete" : "lessonComplete");
+    }
   }
   window.markLessonComplete = markComplete;
 

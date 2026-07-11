@@ -1930,6 +1930,7 @@ input { caret-color: var(--gold-400); }
   margin: 2.5rem 0;
   opacity: 1;
   transition: opacity 1.2s ease;
+  overflow: visible;
 }
 .credits-cosmo-cameo.credits-cameo-fade-out {
   opacity: 0;
@@ -1943,58 +1944,46 @@ input { caret-color: var(--gold-400); }
 .credits-cosmo-sprite .cosmo-bob {
   animation: cosmo-bob 2.6s ease-in-out infinite;
 }
+.credits-cameo-float-ltr .cosmo-sprite,
+.credits-cameo-float-ltr .credits-kiwo-sprite {
+  animation: credits-float-ltr 6s ease-in-out infinite, cosmo-bob 2.6s ease-in-out infinite;
+}
+.credits-cameo-float-rtl .cosmo-sprite,
+.credits-cameo-float-rtl .credits-kiwo-sprite {
+  animation: credits-float-rtl 6s ease-in-out infinite, cosmo-bob 2.6s ease-in-out infinite;
+}
+@keyframes credits-float-ltr {
+  0%, 100% { transform: translateX(-90px); }
+  50% { transform: translateX(90px); }
+}
+@keyframes credits-float-rtl {
+  0%, 100% { transform: translateX(90px); }
+  50% { transform: translateX(-90px); }
+}
 
-.credits-farewell-section {
-  margin-top: 2rem;
-  padding-top: 2rem;
-}
-.credits-farewell-caption {
-  font-family: var(--font-display);
-  color: var(--gold-400);
-  font-size: 1.1rem;
-  margin-bottom: 1.6rem;
-  font-style: italic;
-}
-.credits-farewell-row {
+.credits-kiwo-cameo {
   display: flex;
   justify-content: center;
-  align-items: flex-end;
-  gap: 1.2rem;
-  flex-wrap: wrap;
+  margin: 2.5rem 0;
+  opacity: 1;
+  transition: opacity 1.2s ease;
 }
-.credits-farewell-sprite {
-  width: 58px !important;
-  height: 58px !important;
+.credits-kiwo-cameo.credits-cameo-fade-out {
+  opacity: 0;
 }
-/* Sad-but-not-crying farewell face: downturned mouth, drooping wave */
-.credits-farewell-sprite .cosmo-mouth {
-  d: path("M 41 65 Q 50 61 59 65") !important;
+.credits-kiwo-sprite {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  border: 2px solid var(--gold-400);
+  object-fit: cover;
 }
-.credits-farewell-sprite .cosmo-brow-l,
-.credits-farewell-sprite .cosmo-brow-r {
-  opacity: 0.7;
-}
-.credits-farewell-sprite .cosmo-brow-l { d: path("M 32 44 Q 38 47 45 45") !important; }
-.credits-farewell-sprite .cosmo-brow-r { d: path("M 55 45 Q 62 47 68 44") !important; }
-.credits-farewell-sprite .cosmo-bob {
-  animation: cosmo-farewell-sway 3.4s ease-in-out infinite;
-}
-@keyframes cosmo-farewell-sway {
-  0%, 100% { transform: translateY(0) rotate(0deg); }
-  50% { transform: translateY(1px) rotate(-1deg); }
-}
-.credits-farewell-sprite .cosmo-arm-r {
-  animation: cosmo-farewell-wave 1.6s ease-in-out infinite;
-  transform-origin: 75px 58px;
-}
+
+/* Shared wave keyframe (used by the certificate build sequence) */
 @keyframes cosmo-farewell-wave {
   0%, 100% { transform: rotate(0deg); }
   50% { transform: rotate(-18deg); }
 }
-.credits-farewell-sprite:nth-child(2) .cosmo-arm-r { animation-delay: 0.15s; }
-.credits-farewell-sprite:nth-child(3) .cosmo-arm-r { animation-delay: 0.3s; }
-.credits-farewell-sprite:nth-child(4) .cosmo-arm-r { animation-delay: 0.45s; }
-.credits-farewell-sprite:nth-child(5) .cosmo-arm-r { animation-delay: 0.6s; }
 
 /* ============ Certificate build sequence — 5 Cosmos assemble it, wave bye, vanish ============ */
 .certificate-build-stage {

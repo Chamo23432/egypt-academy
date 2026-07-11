@@ -56,11 +56,29 @@ const KiwoBrain = (() => {
     return best;
   }
 
+  function getTimeOfDayGreeting() {
+    const hour = new Date().getHours();
+    const acc = (function () {
+      try { return JSON.parse(localStorage.getItem("egyptAcademyAccount")); } catch { return null; }
+    })();
+    const name = acc && acc.name ? acc.name : null;
+    let base;
+    if (hour < 5) base = "You're up late! Night owl mode, I like it.";
+    else if (hour < 12) base = "Good morning!";
+    else if (hour < 17) base = "Good afternoon!";
+    else if (hour < 21) base = "Good evening!";
+    else base = "Working into the night, huh?";
+    return name ? `${base} Good to see you, ${name}.` : `${base} I'm Kiwo — what are you curious about today?`;
+  }
+
   function onlineRespond(text) {
     const match = findMatch(text);
     if (match) {
       if (match.key === "progress") {
         return pickRandom(match.entry.responses) + " " + getProgressSummary();
+      }
+      if (match.key === "greetings") {
+        return getTimeOfDayGreeting();
       }
       return pickRandom(match.entry.responses);
     }

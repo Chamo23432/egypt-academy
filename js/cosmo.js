@@ -327,11 +327,38 @@ const Cosmo = (() => {
 
   document.addEventListener("DOMContentLoaded", init);
 
+  function reactTo(kind, detail) {
+    if (!settings.enabled) return;
+    const lines = {
+      themeChanged: {
+        dark: "Ooh, going dark mode? Nice and moody.",
+        light: "Bright and airy — I like it!",
+        default: "Back to the classic look, I see."
+      },
+      ambientOn: ["Mmm, cozy. I like this lighting.", "Now this feels warm and nice."],
+      ambientOff: ["Back to normal lighting, got it."],
+      quizCorrect: ["Nice one!", "That's right!", "You got it!"],
+      quizWrong: ["Aw, close one.", "Not quite — you'll get the next one."],
+      lessonComplete: ["Lesson done! Nice work.", "Another one finished — great job!"],
+      allComplete: ["Wow, you finished everything! I'm so proud of you."]
+    };
+    let text;
+    if (kind === "themeChanged") {
+      text = lines.themeChanged[detail] || lines.themeChanged.default;
+    } else {
+      const arr = lines[kind];
+      if (!arr) return;
+      text = Array.isArray(arr) ? arr[Math.floor(Math.random() * arr.length)] : arr;
+    }
+    say(text, 3000);
+  }
+
   return {
     say, ask, watchQuiz, stopWatchingQuiz,
     enterFrame, exitFrame,
     getSettings, updateSettings,
     spriteInnerHtml,
+    reactTo,
     THEMES
   };
 })();

@@ -56,6 +56,7 @@
         if (turningOn) document.documentElement.setAttribute("data-ambient", "true");
         else document.documentElement.removeAttribute("data-ambient");
         overlay.classList.remove("ambient-transition-active");
+        if (window.Cosmo) window.Cosmo.reactTo(turningOn ? "ambientOn" : "ambientOff");
         setTimeout(() => overlay.remove(), 600);
       }, durationMs);
     });
@@ -107,6 +108,7 @@
       themeButtons.forEach(b => b.classList.remove("active"));
       btn.classList.add("active");
       applyTheme(btn.dataset.themeValue);
+      if (window.Cosmo) window.Cosmo.reactTo("themeChanged", btn.dataset.themeValue);
     });
   });
 
