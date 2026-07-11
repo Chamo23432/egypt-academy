@@ -566,18 +566,17 @@ const EgyptAcademy = (() => {
       if (!res.ok) throw new Error(`Missing apps/${appId}/index.html`);
       contentEl.innerHTML = await res.text();
 
-      const link = document.createElement("link");
-      link.rel = "stylesheet";
-      link.href = base + "style.css";
-      link.dataset.appAsset = appId;
-      document.head.appendChild(link);
+      // Note: per-app CSS used to be injected here via a <link> tag, but
+      // that caused a visible flash of unstyled buttons/inputs before the
+      // fetch resolved. All app styles now live in the main styles.css
+      // (loaded once, up front), so nothing needs injecting here anymore.
 
       const script = document.createElement("script");
       script.src = base + "script.js";
       script.dataset.appAsset = appId;
       document.body.appendChild(script);
 
-      currentLoadedApp = { css: link, js: script };
+      currentLoadedApp = { css: null, js: script };
     } catch (err) {
       contentEl.innerHTML = `
         <p style="color:var(--carnelian-500)">
