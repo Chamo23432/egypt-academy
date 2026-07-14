@@ -599,8 +599,20 @@ const EgyptAcademy = (() => {
   const DEVTOOLS_UNLOCKED_KEY = "egyptAcademyDevToolsRevealed";
 
   function initSearch() {
-    bindSearchInput("app-search-input", "search-results", "search-processing", ".search-wrap");
+    bindSearchInput("app-search-input", "search-results", "search-processing", ".center-search-box");
     bindSearchInput("mobile-search-input", "mobile-search-results", "mobile-search-processing", ".mobile-search-sheet");
+
+    const centerSearchOverlay = document.getElementById("center-search-overlay");
+    const sidebarSearchIcon = document.getElementById("sidebar-search-icon");
+    if (sidebarSearchIcon && centerSearchOverlay) {
+      sidebarSearchIcon.addEventListener("click", () => {
+        centerSearchOverlay.classList.add("open");
+        setTimeout(() => document.getElementById("app-search-input").focus(), 50);
+      });
+      centerSearchOverlay.addEventListener("click", (e) => {
+        if (e.target === centerSearchOverlay) centerSearchOverlay.classList.remove("open");
+      });
+    }
   }
 
   function bindSearchInput(inputId, resultsId, processingId, closeOnClickOutsideSelector) {
