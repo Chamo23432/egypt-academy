@@ -603,6 +603,7 @@ const EgyptAcademy = (() => {
     bindSearchInput("mobile-search-input", "mobile-search-results", "mobile-search-processing", ".mobile-search-sheet");
 
     const centerSearchOverlay = document.getElementById("center-search-overlay");
+    initNotifications();
     const sidebarSearchIcon = document.getElementById("sidebar-search-icon");
     if (sidebarSearchIcon && centerSearchOverlay) {
       sidebarSearchIcon.addEventListener("click", () => {
@@ -615,7 +616,52 @@ const EgyptAcademy = (() => {
     }
   }
 
-  function bindSearchInput(inputId, resultsId, processingId, closeOnClickOutsideSelector) {
+  function initNotifications() {
+    const bell = document.getElementById("top-userbar-bell");
+    const panel = document.getElementById("notif-panel");
+    const list = document.getElementById("notif-panel-list");
+    const dot = document.getElementById("notif-dot");
+    const clearBtn = document.getElementById("notif-clear-btn");
+    if (!bell || !panel || !list) return;
+
+    let notifications = [
+      { title: "Welcome to Egypt Academy!", time: "Just now" },
+      { title: "You completed the Khufu lesson.", time: "Today" },
+      { title: "New quiz available: The Nile River.", time: "Yesterday" }
+    ];
+
+    function render() {
+      if (notifications.length === 0) {
+        list.innerHTML = `<div class="notif-empty">No notifications</div>`;
+        dot.style.display = "none";
+        return;
+      }
+      dot.style.display = "block";
+      list.innerHTML = notifications.map(n => `
+        <div class="notif-item">
+          <span class="notif-item-title">${n.title}</span>
+          <span class="notif-item-time">${n.time}</span>
+        </div>
+      `).join("");
+    }
+
+    bell.addEventListener("click", (e) => {
+      e.stopPropagation();
+      panel.classList.toggle("open");
+    });
+    document.addEventListener("click", (e) => {
+      if (panel.classList.contains("open") && !panel.contains(e.target) && e.target !== bell) {
+        panel.classList.remove("open");
+      }
+    });
+    if (clearBtn) {
+      clearBtn.addEventListener("click", () => {
+        notifications = [];
+        render();
+      });
+    }
+    render();
+  }
     const input = document.getElementById(inputId);
     const resultsEl = document.getElementById(resultsId);
     const processingEl = document.getElementById(processingId);
