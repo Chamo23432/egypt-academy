@@ -121,7 +121,7 @@ html, body {
 /* ============ Side navigation ============ */
 .topbar.sidebar {
   position: fixed;
-  top: 0; left: 0; bottom: 0; right: auto;
+  top: 1rem; left: 1rem; bottom: 1rem; right: auto;
   z-index: 100;
   width: 84px;
   display: flex;
@@ -132,8 +132,64 @@ html, body {
   padding: 1.25rem 0.5rem;
   background: rgba(13, 27, 42, 0.55);
   backdrop-filter: blur(14px);
-  border-bottom: none;
-  border-right: 1px solid var(--glass-border);
+  border: 1px solid var(--glass-border);
+  border-radius: 28px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35);
+}
+
+/* ============ Floating top user bar ============ */
+.top-userbar {
+  position: fixed;
+  top: 1rem; right: 1rem;
+  left: calc(84px + 2rem);
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.6rem 1.1rem;
+  background: rgba(13, 27, 42, 0.55);
+  backdrop-filter: blur(14px);
+  border: 1px solid var(--glass-border);
+  border-radius: 999px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35);
+}
+@media (max-width: 720px) {
+  .top-userbar { display: none; }
+}
+
+.top-userbar-user {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+.top-userbar-avatar {
+  width: 30px; height: 30px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--glass-bg-light);
+  color: var(--gold-400);
+  font-size: 1rem;
+}
+.top-userbar-name {
+  font-family: var(--font-ui);
+  font-size: 0.9rem;
+  color: var(--text-100);
+}
+.top-userbar-bell {
+  background: transparent;
+  border: none;
+  color: var(--text-300);
+  cursor: pointer;
+  padding: 0.4rem;
+  border-radius: 999px;
+  display: flex;
+  transition: all 0.25s var(--ease);
+}
+.top-userbar-bell:hover {
+  color: var(--gold-400);
+  background: var(--glass-bg-light);
 }
 
 .brand {
@@ -228,6 +284,71 @@ html, body {
   width: 100%;
   font-size: 1.05rem;
   padding: 0.9rem 1.2rem;
+}
+
+/* ============ Fabricith ============ */
+.fabricith-app {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  gap: 1.5rem;
+  max-width: 1100px;
+  margin: 5rem auto 2rem;
+  padding: 0 2rem;
+}
+@media (max-width: 720px) {
+  .fabricith-app { grid-template-columns: 1fr; margin-top: 1rem; }
+}
+.fabricith-filters h3 {
+  margin: 0 0 1rem;
+  font-family: var(--font-display);
+  color: var(--gold-400);
+  font-size: 1rem;
+}
+.fabricith-filter-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+.fabricith-filter-label {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-300);
+  margin-bottom: 0.2rem;
+}
+.fabricith-filter-group label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.85rem;
+  color: var(--text-300);
+}
+.fabricith-main {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+.fabricith-searchbar {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.8rem 1.2rem;
+  color: var(--text-300);
+}
+.fabricith-searchbar input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: var(--text-100, #eee);
+  font-size: 0.95rem;
+  font-family: var(--font-ui);
+}
+.fabricith-empty-state {
+  text-align: center;
+  padding: 4rem 1rem;
+  color: var(--text-300);
+  font-family: var(--font-ui);
 }
 
 /* ============ Views ============ */
