@@ -1,0 +1,15 @@
+/* UI styles: crosshair, hotbar, inventory, pause menu, death screen. */
+/* Phase 1+ target. Not yet implemented. */
+
+html, body {
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background: #000;
+}
+
+#game-canvas {
+  display: block;
+  width: 100vw;
+  height: 100vh;
+}
