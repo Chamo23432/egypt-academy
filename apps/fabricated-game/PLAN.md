@@ -93,12 +93,24 @@ Sections (contents TBD, placeholders for now):
 - Debug: press H to take test damage (temporary, remove once real damage
   sources like crocodiles exist in Phase 6)
 
-### Phase 3 — Inventory & backpack sequence
-- Hotbar (2 slots: main hand, off hand)
-- Backpack pickup item in world
-- Full E-press backpack animation sequence (see above)
-- Inventory UI (grid) wired to backpack storage
-- Q to drop
+### Phase 3 — Inventory & backpack sequence ✅ DONE (Phase 3 baseline)
+- Hotbar (2 slots: main hand, off hand) UI, bottom-center
+- Backpack pickup item placed in the world; walking near it grants
+  inventory access (E does nothing until it's picked up)
+- E-press backpack sequence: status-text stand-in for the 3D animation
+  (take off / place down / unzip, then reverse on close) — swap in the real
+  3D backpack-drop animation once a visible third-person model + world-space
+  backpack prop exists
+- Inventory UI: grid overlay (4x6 backpack slots)
+- Q drops whatever's in the main hand slot
+
+### Integration notes
+- Egypt Academy now hides the sidebar/topbar/user-topbar when the
+  Fabricated view is active, and the game iframe goes truly fullscreen
+- Pointer lock hides the OS cursor natively; a `body.pointer-locked` CSS
+  class + `cursor: none` is added as a fallback
+- Pause menu restyled to look like vanilla Minecraft's pause screen
+  (beveled gray buttons, dark dim backdrop, monospace font)
 
 ### Phase 4 — Hub + Portals
 - Spawn hub area

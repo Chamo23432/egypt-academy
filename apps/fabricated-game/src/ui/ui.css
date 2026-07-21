@@ -13,6 +13,10 @@ html, body {
   width: 100vw;
   height: 100vh;
 }
+body.pointer-locked,
+body.pointer-locked #game-canvas {
+  cursor: none;
+}
 
 #ui-root {
   position: fixed;
@@ -73,66 +77,79 @@ html, body {
   transition: width 0.2s ease;
 }
 
-/* Pause menu */
-.pause-overlay {
+/* Pause menu — Minecraft style */
+.mc-pause-overlay {
   position: fixed;
   inset: 0;
   z-index: 100;
   display: none;
   align-items: center;
   justify-content: center;
-  background: rgba(0, 0, 0, 0.6);
+  background: rgba(20, 20, 20, 0.6);
+  font-family: "Courier New", monospace;
 }
-.pause-panel {
-  width: min(600px, 90vw);
-  background: rgba(20, 22, 28, 0.95);
-  border: 1px solid rgba(255,255,255,0.1);
-  border-radius: 12px;
-  padding: 1.5rem;
-  color: #eee;
-}
-.pause-panel h2 {
-  margin: 0 0 1rem;
-  text-align: center;
-}
-.pause-nav {
+.mc-pause-panel {
+  width: min(480px, 92vw);
   display: flex;
-  gap: 0.5rem;
-  flex-wrap: wrap;
-  justify-content: center;
-  margin-bottom: 1rem;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0.7rem;
 }
-.pause-nav-btn {
-  background: rgba(255,255,255,0.06);
-  border: 1px solid rgba(255,255,255,0.15);
-  color: #eee;
-  padding: 0.5rem 1rem;
-  border-radius: 8px;
-  cursor: pointer;
+.mc-pause-title {
+  text-align: center;
+  color: #fff;
+  font-size: 1.3rem;
+  font-weight: bold;
+  text-shadow: 2px 2px 0 rgba(0,0,0,0.6);
+  margin-bottom: 0.5rem;
+  letter-spacing: 0.02em;
 }
-.pause-nav-btn:hover,
-.pause-nav-btn.active {
-  background: rgba(255,255,255,0.16);
-}
-.pause-content {
-  min-height: 80px;
+.mc-pause-subtext {
   text-align: center;
   color: #ccc;
-  margin-bottom: 1rem;
+  font-size: 0.85rem;
+  min-height: 1.2em;
+  text-shadow: 1px 1px 0 rgba(0,0,0,0.6);
 }
-.pause-resume-btn {
-  display: block;
-  margin: 0 auto;
-  background: #4a7c3a;
-  border: none;
-  color: white;
-  padding: 0.6rem 1.4rem;
-  border-radius: 8px;
+
+/* Classic beveled gray button */
+.mc-btn {
+  position: relative;
+  font-family: "Courier New", monospace;
+  font-size: 0.95rem;
+  color: #e8e8e8;
+  text-shadow: 1px 1px 0 rgba(0,0,0,0.6);
+  background: #6b6b6b;
+  border-top: 2px solid #9a9a9a;
+  border-left: 2px solid #9a9a9a;
+  border-right: 2px solid #313131;
+  border-bottom: 2px solid #313131;
+  padding: 0.7rem 1rem;
   cursor: pointer;
-  font-size: 1rem;
+  box-sizing: border-box;
 }
-.pause-resume-btn:hover {
-  background: #5a9448;
+.mc-btn:hover {
+  background: #7d7d5a;
+  border-top-color: #d6d68a;
+  border-left-color: #d6d68a;
+  color: #fff9c4;
+}
+.mc-btn:active {
+  border-top-color: #313131;
+  border-left-color: #313131;
+  border-right-color: #9a9a9a;
+  border-bottom-color: #9a9a9a;
+}
+.mc-btn-wide {
+  width: 100%;
+}
+.mc-btn-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.4rem;
+}
+.mc-btn-grid .mc-btn:first-child {
+  grid-column: 1 / -1;
 }
 
 /* Death screen */
@@ -181,4 +198,118 @@ html, body {
 @keyframes damage-flash-anim {
   0% { opacity: 1; box-shadow: inset 0 0 120px 40px rgba(224, 0, 0, 0.55); }
   100% { opacity: 0; box-shadow: inset 0 0 120px 40px rgba(224, 0, 0, 0); }
+}
+
+/* Hotbar — 2 slots (main hand, off hand) */
+.hotbar {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 6px;
+  z-index: 10;
+}
+.hotbar-slot {
+  position: relative;
+  width: 54px;
+  height: 54px;
+  background: rgba(0,0,0,0.45);
+  border: 2px solid rgba(255,255,255,0.25);
+  border-radius: 4px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+.hotbar-slot.filled {
+  border-color: rgba(255,255,255,0.6);
+}
+.hotbar-slot-label {
+  position: absolute;
+  top: 2px;
+  left: 4px;
+  font-size: 0.6rem;
+  color: rgba(255,255,255,0.5);
+  font-family: "Courier New", monospace;
+}
+.hotbar-slot-icon {
+  width: 32px;
+  height: 32px;
+  margin-bottom: 6px;
+  border-radius: 3px;
+  background: #c99a6b;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  color: #2b1e12;
+  font-family: "Courier New", monospace;
+}
+
+/* Backpack sequence status text (Phase 3 stand-in for the 3D animation) */
+.backpack-status {
+  position: fixed;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 90;
+  display: none;
+  color: #fff;
+  font-family: "Courier New", monospace;
+  font-size: 1rem;
+  text-shadow: 2px 2px 0 rgba(0,0,0,0.7);
+  background: rgba(0,0,0,0.35);
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+}
+
+/* Inventory (backpack) grid overlay */
+.inventory-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 80;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0,0,0,0.5);
+}
+.inventory-panel {
+  background: rgba(30, 30, 30, 0.95);
+  border: 2px solid rgba(255,255,255,0.2);
+  border-radius: 8px;
+  padding: 1.2rem;
+  font-family: "Courier New", monospace;
+  color: #eee;
+}
+.inventory-title {
+  text-align: center;
+  font-size: 1.1rem;
+  margin-bottom: 0.8rem;
+  text-shadow: 1px 1px 0 rgba(0,0,0,0.6);
+}
+.inventory-grid {
+  display: grid;
+  gap: 5px;
+}
+.inventory-slot {
+  width: 46px;
+  height: 46px;
+  background: rgba(0,0,0,0.4);
+  border: 2px solid rgba(255,255,255,0.2);
+  border-radius: 3px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+}
+.inventory-slot.filled {
+  border-color: rgba(255,255,255,0.5);
+  background: #c99a6b;
+  color: #2b1e12;
+}
+.inventory-hint {
+  text-align: center;
+  margin-top: 0.7rem;
+  font-size: 0.75rem;
+  color: #999;
 }

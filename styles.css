@@ -376,17 +376,11 @@ html, body {
 }
 .fabricated-frame {
   position: fixed;
-  top: 0;
-  left: 84px;
-  right: 0;
-  bottom: 0;
-  width: calc(100vw - 84px);
+  inset: 0;
+  width: 100vw;
   height: 100vh;
   border: none;
   z-index: 1;
-}
-@media (max-width: 720px) {
-  .fabricated-frame { left: 0; width: 100vw; }
 }
 
 /* ============ Fabricith ============ */

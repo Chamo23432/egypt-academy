@@ -1,12 +1,17 @@
 // Entry point — boots the Three.js scene, renderer, and game loop.
+import * as THREE from "three";
 import { createScene } from "./scene.js";
 import { createInput } from "./input.js";
 import { createPlayerController } from "../player/player-controller.js";
 import { createHealthSystem } from "../player/health.js";
 import { createFirstPersonArm } from "../player/player-model.js";
 import { createFirstPersonArmAnimator } from "../animations/interaction-anims.js";
+import { createInventory } from "../player/inventory.js";
+import { createBackpackSequence } from "../player/backpack-sequence.js";
 import { createPauseMenu } from "../ui/pause-menu.js";
 import { createDeathScreen, createDamageFlash } from "../ui/death-screen.js";
+import { createHotbarUI } from "../ui/hotbar-ui.js";
+import { createInventoryUI } from "../ui/inventory-ui.js";
 
 const uiRoot = document.getElementById("ui-root");
 const canvas = document.getElementById("game-canvas");
@@ -22,6 +27,11 @@ healthHud.className = "health-hud";
 healthHud.innerHTML = `<div class="health-bar-track"><div class="health-bar-fill" id="health-fill"></div></div>`;
 uiRoot.appendChild(healthHud);
 const healthFillEl = document.getElementById("health-fill");
+
+// Backpack sequence status text (stand-in visual for Phase 3)
+const backpackStatusEl = document.createElement("div");
+backpackStatusEl.className = "backpack-status";
+uiRoot.appendChild(backpackStatusEl);
 
 const { scene, camera, renderer } = createScene();
 
@@ -57,8 +67,59 @@ const health = createHealthSystem({
   },
 });
 
+// --- Inventory / backpack (Phase 3) ---
+const inventory = createInventory();
+const hotbarUI = createHotbarUI(uiRoot, inventory);
+const backpackSequence = createBackpackSequence(fpArmPivot, backpackStatusEl);
+let inventoryOpen = false;
+
+const inventoryUI = createInventoryUI(uiRoot, inventory, {
+  onClose: () => { inventoryOpen = false; },
+});
+
+// Backpack pickup item placed in the world — walk near it and it's picked up.
+const backpackPickupGeo = new THREE.BoxGeometry(0.5, 0.4, 0.3);
+const backpackPickupMat = new THREE.MeshStandardMaterial({ color: 0x7a4a2a });
+const backpackPickupMesh = new THREE.Mesh(backpackPickupGeo, backpackPickupMat);
+backpackPickupMesh.position.set(2, 0.3, 2);
+backpackPickupMesh.castShadow = true;
+scene.add(backpackPickupMesh);
+
+async function toggleInventory() {
+  if (health.isDead() || paused) return;
+  if (backpackSequence.isBusy()) return;
+
+  if (!inventory.hasBackpack()) {
+    console.log("No backpack yet — find and pick one up first.");
+    return;
+  }
+
+  if (!inventoryOpen) {
+    inventoryOpen = true;
+    input.exitPointerLock();
+    await backpackSequence.playOpen();
+    inventoryUI.show();
+  } else {
+    inventoryUI.hide();
+    await backpackSequence.playClose();
+    canvas.requestPointerLock();
+  }
+}
+
+function dropCurrentItem() {
+  if (health.isDead() || paused || inventoryOpen) return;
+  const dropped = inventory.dropHotbarItem(0);
+  if (dropped) {
+    console.log("Dropped:", dropped.name);
+    hotbarUI.render();
+  } else {
+    console.log("Nothing in main hand to drop.");
+  }
+}
+
 function setPaused(value) {
   if (health.isDead()) return; // death screen takes priority over pause
+  if (inventoryOpen) return; // inventory takes priority over pause toggle
   paused = value;
   if (paused) {
     pauseMenu.show();
@@ -73,14 +134,12 @@ function setPaused(value) {
 
 const input = createInput(canvas, {
   onPauseToggle: () => setPaused(!paused),
-  onToggleInventory: () => {
-    // Phase 3 will hook the backpack sequence here.
-    console.log("Inventory toggle — not implemented yet (Phase 3).");
+  onToggleInventory: toggleInventory,
+  onDrop: dropCurrentItem,
+  isPaused: () => paused || health.isDead() || inventoryOpen,
+  onPointerLockChange: (locked) => {
+    document.body.classList.toggle("pointer-locked", locked);
   },
-  onDrop: () => {
-    console.log("Drop item — not implemented yet (Phase 3).");
-  },
-  isPaused: () => paused || health.isDead(),
 });
 
 const playerController = createPlayerController(camera, input);
@@ -105,12 +164,22 @@ function animate() {
   const dt = Math.min((now - lastTime) / 1000, 0.1);
   lastTime = now;
 
-  if (!paused && !health.isDead()) {
+  if (!paused && !health.isDead() && !inventoryOpen) {
     playerController.update(dt);
 
     const { keys } = input;
     const isMoving = keys.forward || keys.back || keys.left || keys.right;
     fpArmAnimator.update(dt, { isMoving });
+
+    // Backpack pickup check — simple distance test against the camera.
+    if (backpackPickupMesh.visible && !inventory.hasBackpack()) {
+      const dist = camera.position.distanceTo(backpackPickupMesh.position);
+      if (dist < 1.2) {
+        inventory.pickUpBackpack();
+        backpackPickupMesh.visible = false;
+        console.log("Picked up the backpack! Press E to open your inventory.");
+      }
+    }
   }
 
   renderer.render(scene, camera);

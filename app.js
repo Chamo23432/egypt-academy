@@ -51,12 +51,16 @@ const EgyptAcademy = (() => {
     if (viewId === "view-devtools") loadContentApp("devtools", "devtools-content");
     if (viewId === "view-kiwo") loadContentApp("kiwo", "kiwo-content");
     const topbar = document.querySelector(".topbar");
+    const userTopbar = document.querySelector(".top-userbar");
     const mobileNotch = document.querySelector(".mobile-notch");
     const mobileNavbar = document.querySelector(".mobile-navbar");
     const isCredits = viewId === "view-credits";
-    if (topbar) topbar.style.display = isCredits ? "none" : "flex";
-    if (mobileNotch) mobileNotch.style.display = isCredits ? "none" : "";
-    if (mobileNavbar) mobileNavbar.style.display = isCredits ? "none" : "";
+    const isFabricated = viewId === "view-fabricated";
+    const hideChrome = isCredits || isFabricated;
+    if (topbar) topbar.style.display = hideChrome ? "none" : "flex";
+    if (userTopbar) userTopbar.style.display = hideChrome ? "none" : "flex";
+    if (mobileNotch) mobileNotch.style.display = hideChrome ? "none" : "";
+    if (mobileNavbar) mobileNavbar.style.display = hideChrome ? "none" : "";
 
     if (viewId === "view-credits" && window.Credits) {
       window.Credits.render(document.getElementById("credits-content"));
