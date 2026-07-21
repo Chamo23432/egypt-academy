@@ -112,10 +112,16 @@ Sections (contents TBD, placeholders for now):
 - Pause menu restyled to look like vanilla Minecraft's pause screen
   (beveled gray buttons, dark dim backdrop, monospace font)
 
-### Phase 4 — Hub + Portals
-- Spawn hub area
-- 2 portals with visual identity (pyramids vs Nile)
-- Portal transition into each world
+### Phase 4 — Hub + Portals ✅ DONE (Phase 4 baseline)
+- Spawn hub with two glowing portal archways, positioned left/right, each
+  with a floating text label ("Pyramids" / "The Nile") and a distinct
+  glow color (warm sand vs cool teal) so they read as different destinations
+- Walking within ~1.3 units of a portal triggers a fade-to-black transition
+- On fade midpoint the camera teleports to a placeholder area (no real
+  terrain yet — that's Phase 5/6). Real per-world spawn points get wired in
+  once those worlds exist
+- Fade transition system (portal-transition.js) is generic/reusable —
+  the pyramid cutscene system in Phase 5 can build on the same pattern
 
 ### Phase 5 — Pyramids world
 - Desert terrain + trail from spawn to pyramids

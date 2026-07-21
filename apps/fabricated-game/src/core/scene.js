@@ -44,21 +44,6 @@ export function createScene() {
   ground.receiveShadow = true;
   scene.add(ground);
 
-  // A few placeholder cubes so the world isn't empty/featureless
-  const boxGeo = new THREE.BoxGeometry(1, 1, 1);
-  const boxMat = new THREE.MeshStandardMaterial({ color: 0xc2a15b });
-  for (let i = 0; i < 8; i++) {
-    const box = new THREE.Mesh(boxGeo, boxMat);
-    box.position.set(
-      (Math.random() - 0.5) * 40,
-      0.5,
-      (Math.random() - 0.5) * 40
-    );
-    box.castShadow = true;
-    box.receiveShadow = true;
-    scene.add(box);
-  }
-
   window.addEventListener("resize", () => {
     camera.aspect = window.innerWidth / window.innerHeight;
     camera.updateProjectionMatrix();

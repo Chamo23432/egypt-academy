@@ -12,6 +12,8 @@ import { createPauseMenu } from "../ui/pause-menu.js";
 import { createDeathScreen, createDamageFlash } from "../ui/death-screen.js";
 import { createHotbarUI } from "../ui/hotbar-ui.js";
 import { createInventoryUI } from "../ui/inventory-ui.js";
+import { createHubPortals } from "../world/hub-portals.js";
+import { createPortalTransition } from "../ui/portal-transition.js";
 
 const uiRoot = document.getElementById("ui-root");
 const canvas = document.getElementById("game-canvas");
@@ -85,8 +87,32 @@ backpackPickupMesh.position.set(2, 0.3, 2);
 backpackPickupMesh.castShadow = true;
 scene.add(backpackPickupMesh);
 
+// --- Hub + Portals (Phase 4) ---
+const portalTransition = createPortalTransition(uiRoot);
+let inTransition = false;
+
+const hubPortals = createHubPortals(scene, {
+  onEnterPyramids: () => enterWorld("Pyramids", new THREE.Vector3(-4, 1.7, -20)),
+  onEnterNile: () => enterWorld("Nile", new THREE.Vector3(4, 1.7, -20)),
+});
+
+async function enterWorld(worldName, destination) {
+  if (inTransition) return;
+  inTransition = true;
+  input.exitPointerLock();
+  await portalTransition.playTransition(() => {
+    camera.position.copy(destination);
+    console.log(
+      `Entered the ${worldName} world (placeholder teleport — real terrain arrives in a later phase).`
+    );
+  });
+  canvas.requestPointerLock();
+  hubPortals.resetTrigger();
+  inTransition = false;
+}
+
 async function toggleInventory() {
-  if (health.isDead() || paused) return;
+  if (health.isDead() || paused || inTransition) return;
   if (backpackSequence.isBusy()) return;
 
   if (!inventory.hasBackpack()) {
@@ -120,6 +146,7 @@ function dropCurrentItem() {
 function setPaused(value) {
   if (health.isDead()) return; // death screen takes priority over pause
   if (inventoryOpen) return; // inventory takes priority over pause toggle
+  if (inTransition) return; // don't allow pausing mid-portal-transition
   paused = value;
   if (paused) {
     pauseMenu.show();
@@ -136,7 +163,7 @@ const input = createInput(canvas, {
   onPauseToggle: () => setPaused(!paused),
   onToggleInventory: toggleInventory,
   onDrop: dropCurrentItem,
-  isPaused: () => paused || health.isDead() || inventoryOpen,
+  isPaused: () => paused || health.isDead() || inventoryOpen || inTransition,
   onPointerLockChange: (locked) => {
     document.body.classList.toggle("pointer-locked", locked);
   },
@@ -170,6 +197,10 @@ function animate() {
     const { keys } = input;
     const isMoving = keys.forward || keys.back || keys.left || keys.right;
     fpArmAnimator.update(dt, { isMoving });
+
+    if (!inTransition) {
+      hubPortals.update(dt, camera.position);
+    }
 
     // Backpack pickup check — simple distance test against the camera.
     if (backpackPickupMesh.visible && !inventory.hasBackpack()) {
