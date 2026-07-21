@@ -56,6 +56,7 @@ const EgyptAcademy = (() => {
     const mobileNavbar = document.querySelector(".mobile-navbar");
     const isCredits = viewId === "view-credits";
     const isFabricated = viewId === "view-fabricated";
+    if (window.Cosmo) window.Cosmo.setVisible(!isFabricated);
     const hideChrome = isCredits || isFabricated;
     if (topbar) topbar.style.display = hideChrome ? "none" : "flex";
     if (userTopbar) userTopbar.style.display = hideChrome ? "none" : "flex";

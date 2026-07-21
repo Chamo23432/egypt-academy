@@ -302,6 +302,10 @@ const Cosmo = (() => {
     sprite.classList.remove("cosmo-in-frame");
     if (sprite && settings.enabled) sprite.style.visibility = "visible";
   }
+  function setVisible(visible) {
+    if (bubble && !visible) bubble.style.display = "none";
+    if (sprite) sprite.style.visibility = visible && settings.enabled ? "visible" : "hidden";
+  }
 
   /* ---------- Settings API used by apps/cosmo ---------- */
   function getSettings() { return Object.assign({}, settings); }
@@ -355,7 +359,7 @@ const Cosmo = (() => {
 
   return {
     say, ask, watchQuiz, stopWatchingQuiz,
-    enterFrame, exitFrame,
+    enterFrame, exitFrame, setVisible,
     getSettings, updateSettings,
     spriteInnerHtml,
     reactTo,
