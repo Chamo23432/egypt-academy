@@ -662,6 +662,8 @@ const EgyptAcademy = (() => {
     }
     render();
   }
+
+  function bindSearchInput(inputId, resultsId, processingId, closeOnClickOutsideSelector) {
     const input = document.getElementById(inputId);
     const resultsEl = document.getElementById(resultsId);
     const processingEl = document.getElementById(processingId);
