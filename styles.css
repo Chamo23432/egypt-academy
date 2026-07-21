@@ -370,6 +370,25 @@ html, body {
   padding: 0.9rem 1.2rem;
 }
 
+/* ============ Fabricated (the actual game, embedded) ============ */
+.view-fabricated {
+  padding: 0 !important;
+}
+.fabricated-frame {
+  position: fixed;
+  top: 0;
+  left: 84px;
+  right: 0;
+  bottom: 0;
+  width: calc(100vw - 84px);
+  height: 100vh;
+  border: none;
+  z-index: 1;
+}
+@media (max-width: 720px) {
+  .fabricated-frame { left: 0; width: 100vw; }
+}
+
 /* ============ Fabricith ============ */
 .fabricith-app {
   display: grid;

@@ -77,18 +77,21 @@ Sections (contents TBD, placeholders for now):
 
 ## Phases
 
-### Phase 1 — Core engine skeleton
+### Phase 1 — Core engine skeleton ✅ DONE
 - Three.js scene, camera, renderer boot-up
 - Pointer lock + crosshair
 - Basic ground plane + skybox placeholder
 - WASD movement + jump + crouch (no animation yet, just camera/capsule movement)
 - Esc pause menu shell (sections present, empty content)
 
-### Phase 2 — Player rig & core animations
-- Steve-like blocky player model/rig
-- Walk/run/jump/crouch limb-swing animations
-- First-person arm view + bob synced to movement
-- Health system + damage flash + death screen
+### Phase 2 — Player rig & core animations ✅ DONE
+- Steve-like blocky player model/rig (full body, for future third-person use)
+- First-person right arm + hand visible to the player (Minecraft-style)
+- Walk/idle rigid limb-swing animation (movement-anims.js) for the full-body rig
+- First-person arm bob synced to movement + rigid attack-swing on left-click
+- Health system (20-point scale), damage flash vignette, death screen + respawn
+- Debug: press H to take test damage (temporary, remove once real damage
+  sources like crocodiles exist in Phase 6)
 
 ### Phase 3 — Inventory & backpack sequence
 - Hotbar (2 slots: main hand, off hand)
