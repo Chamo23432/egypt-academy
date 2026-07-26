@@ -55,9 +55,7 @@ const EgyptAcademy = (() => {
     const mobileNotch = document.querySelector(".mobile-notch");
     const mobileNavbar = document.querySelector(".mobile-navbar");
     const isCredits = viewId === "view-credits";
-    const isFabricated = viewId === "view-fabricated";
-    if (window.Cosmo) window.Cosmo.setVisible(!isFabricated);
-    const hideChrome = isCredits || isFabricated;
+    const hideChrome = isCredits;
     if (topbar) topbar.style.display = hideChrome ? "none" : "flex";
     if (userTopbar) userTopbar.style.display = hideChrome ? "none" : "flex";
     if (mobileNotch) mobileNotch.style.display = hideChrome ? "none" : "";
