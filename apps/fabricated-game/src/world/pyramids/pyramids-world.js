@@ -9,6 +9,12 @@ const PYRAMID_POSITIONS = [
 
 const INTERACT_DISTANCE = 4.5;
 
+function horizontalDistance(a, b) {
+  const dx = a.x - b.x;
+  const dz = a.z - b.z;
+  return Math.sqrt(dx * dx + dz * dz);
+}
+
 function buildDesertGround() {
   const geo = new THREE.PlaneGeometry(200, 200, 1, 1);
   const mat = new THREE.MeshStandardMaterial({ color: 0xd9c07a });
@@ -66,7 +72,7 @@ export function createPyramidsWorld(scene) {
   function checkInteraction(cameraPosition, isRightClickPressed, onEnterPyramid) {
     if (!group.visible || !isRightClickPressed) return;
     for (const p of pyramids) {
-      const dist = cameraPosition.distanceTo(p.mesh.position);
+      const dist = horizontalDistance(cameraPosition, p.mesh.position);
       if (dist < INTERACT_DISTANCE + Math.max(p.mesh.geometry.parameters.radius, 0)) {
         onEnterPyramid(p);
         return;

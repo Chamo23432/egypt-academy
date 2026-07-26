@@ -111,7 +111,7 @@ async function enterPyramidsWorld() {
     currentWorld = "pyramids";
     console.log("Entered the Pyramids world.");
   });
-  canvas.requestPointerLock();
+  input.requestPointerLock();
   hubPortals.resetTrigger();
   inTransition = false;
 }
@@ -126,7 +126,7 @@ async function enterWorld(worldName, destination) {
       `Entered the ${worldName} world (placeholder teleport — real terrain arrives in a later phase).`
     );
   });
-  canvas.requestPointerLock();
+  input.requestPointerLock();
   hubPortals.resetTrigger();
   inTransition = false;
 }
@@ -148,7 +148,7 @@ async function toggleInventory() {
   } else {
     inventoryUI.hide();
     await backpackSequence.playClose();
-    canvas.requestPointerLock();
+    input.requestPointerLock();
   }
 }
 
@@ -175,7 +175,7 @@ function setPaused(value) {
   } else {
     pauseMenu.hide();
     crosshair.style.display = "block";
-    canvas.requestPointerLock();
+    input.requestPointerLock();
   }
 }
 

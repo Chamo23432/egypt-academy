@@ -1,5 +1,30 @@
 // Keyboard/mouse input handling: WASD, space, shift, e, q, esc, pointer lock.
 
+// Chrome (and some other browsers) enforce a short cooldown after an
+// Escape-triggered pointer-lock exit before a new lock request is allowed.
+// A request made inside that window fails silently. To make "resume"
+// buttons reliable, retry a couple of times with short delays.
+function requestLockWithRetry(canvas, attemptsLeft = 4, delayMs = 150) {
+  const promise = canvas.requestPointerLock();
+  // requestPointerLock() may return a Promise (newer spec) or undefined
+  // (older implementations) — handle both without assuming either.
+  if (promise && typeof promise.catch === "function") {
+    promise.catch(() => {
+      if (attemptsLeft > 0) {
+        setTimeout(() => requestLockWithRetry(canvas, attemptsLeft - 1, delayMs), delayMs);
+      }
+    });
+  } else if (attemptsLeft > 0) {
+    // Fallback for browsers without the Promise-returning API: just check
+    // shortly after whether lock actually landed, and retry if not.
+    setTimeout(() => {
+      if (document.pointerLockElement !== canvas) {
+        requestLockWithRetry(canvas, attemptsLeft - 1, delayMs);
+      }
+    }, delayMs);
+  }
+}
+
 export function createInput(canvas, callbacks = {}) {
   const keys = {
     forward: false,
@@ -78,7 +103,7 @@ export function createInput(canvas, callbacks = {}) {
 
   canvas.addEventListener("click", () => {
     if (!pointerLocked && !callbacks.isPaused?.()) {
-      canvas.requestPointerLock();
+      requestLockWithRetry(canvas);
     }
   });
 
@@ -92,6 +117,7 @@ export function createInput(canvas, callbacks = {}) {
     getYaw: () => yaw,
     getPitch: () => pitch,
     isPointerLocked: () => pointerLocked,
+    requestPointerLock: () => requestLockWithRetry(canvas),
     exitPointerLock: () => {
       intentionalExit = true;
       document.exitPointerLock();

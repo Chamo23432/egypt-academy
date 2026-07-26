@@ -3,7 +3,13 @@ import * as THREE from "three";
 
 const PORTAL_WIDTH = 2.2;
 const PORTAL_HEIGHT = 3.4;
-const TRIGGER_DISTANCE = 1.3;
+const TRIGGER_DISTANCE = 2.2;
+
+function horizontalDistance(a, b) {
+  const dx = a.x - b.x;
+  const dz = a.z - b.z;
+  return Math.sqrt(dx * dx + dz * dz);
+}
 
 function buildPortalFrame(color) {
   const group = new THREE.Group();
@@ -105,8 +111,8 @@ export function createHubPortals(scene, { onEnterPyramids, onEnterNile } = {}) {
 
     if (triggered) return;
 
-    const distToPyramids = cameraPosition.distanceTo(pyramidsPortal.group.position);
-    const distToNile = cameraPosition.distanceTo(nilePortal.group.position);
+    const distToPyramids = horizontalDistance(cameraPosition, pyramidsPortal.group.position);
+    const distToNile = horizontalDistance(cameraPosition, nilePortal.group.position);
 
     if (distToPyramids < TRIGGER_DISTANCE) {
       triggered = true;

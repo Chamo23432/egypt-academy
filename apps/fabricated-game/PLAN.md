@@ -133,6 +133,30 @@ Sections (contents TBD, placeholders for now):
   keydown Escape handler still covers the case where Escape is pressed
   while NOT locked (e.g. closing the menu after it's already open)
 
+### Bugfix round 2 — portal not triggering, "Back to Game" not re-locking, no auto-lock
+- **Portal not working**: the proximity check used full 3D distance
+  between the camera and the portal's base position. Since the portal
+  base sits at y=0 and the camera sits at eye height (~1.7), that vertical
+  offset alone exceeded the trigger radius, so it could never fire. Fixed
+  by switching to horizontal (XZ-plane) distance and widening the radius.
+  Same fix applied to the pyramid right-click interaction check.
+- **"Back to Game" not re-locking the cursor**: Chrome (and some other
+  browsers) enforce a short cooldown after an Escape-triggered pointer
+  unlock before allowing a new lock request — a request inside that
+  window fails silently. Added `requestLockWithRetry` in input.js, which
+  retries a few times with short delays if the lock doesn't land. All
+  `requestPointerLock` calls in the game (resume, respawn, after
+  inventory close, after portal transition) now go through
+  `input.requestPointerLock()` instead of calling the canvas method
+  directly.
+- **No auto-lock without opening/closing the pause menu**: browsers don't
+  allow pointer lock without a direct user gesture, so a true "lock
+  itself on load" isn't possible — but the existing canvas click-to-lock
+  listener now also uses the retry helper, so the very first click
+  anywhere on the canvas reliably locks (previously a raw one-shot
+  request could silently fail under the same cooldown/edge cases as
+  above).
+
 ### Phase 5 — Pyramids world ✅ DONE (Phase 5 baseline)
 - Desert ground plane + a visible trail strip from the hub-facing spawn
   point toward the pyramid cluster
