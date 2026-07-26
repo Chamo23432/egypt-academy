@@ -14,6 +14,8 @@ import { createHotbarUI } from "../ui/hotbar-ui.js";
 import { createInventoryUI } from "../ui/inventory-ui.js";
 import { createHubPortals } from "../world/hub-portals.js";
 import { createPortalTransition } from "../ui/portal-transition.js";
+import { createPyramidsWorld } from "../world/pyramids/pyramids-world.js";
+import { playPyramidCutscene } from "../world/pyramids/pyramid-cutscenes.js";
 
 const uiRoot = document.getElementById("ui-root");
 const canvas = document.getElementById("game-canvas");
@@ -90,11 +92,29 @@ scene.add(backpackPickupMesh);
 // --- Hub + Portals (Phase 4) ---
 const portalTransition = createPortalTransition(uiRoot);
 let inTransition = false;
+let currentWorld = "hub"; // "hub" | "pyramids"
+
+const pyramidsWorld = createPyramidsWorld(scene);
 
 const hubPortals = createHubPortals(scene, {
-  onEnterPyramids: () => enterWorld("Pyramids", new THREE.Vector3(-4, 1.7, -20)),
+  onEnterPyramids: () => enterPyramidsWorld(),
   onEnterNile: () => enterWorld("Nile", new THREE.Vector3(4, 1.7, -20)),
 });
+
+async function enterPyramidsWorld() {
+  if (inTransition) return;
+  inTransition = true;
+  input.exitPointerLock();
+  await portalTransition.playTransition(() => {
+    pyramidsWorld.setActive(true);
+    camera.position.copy(pyramidsWorld.spawnPoint);
+    currentWorld = "pyramids";
+    console.log("Entered the Pyramids world.");
+  });
+  canvas.requestPointerLock();
+  hubPortals.resetTrigger();
+  inTransition = false;
+}
 
 async function enterWorld(worldName, destination) {
   if (inTransition) return;
@@ -177,6 +197,32 @@ canvas.addEventListener("mousedown", (e) => {
     fpArmAnimator.triggerSwing();
   }
 });
+
+// Right-click: used for pyramid entry (Phase 5) and, later, other
+// world interactions (Nile, lotus flowers, crocodile world in Phase 6).
+canvas.addEventListener("contextmenu", (e) => e.preventDefault());
+canvas.addEventListener("mousedown", (e) => {
+  if (e.button !== 2 || !input.isPointerLocked() || inTransition) return;
+  if (currentWorld !== "pyramids") return;
+  pyramidsWorld.checkInteraction(camera.position, true, (pyramid) => {
+    enterPyramidCutscene(pyramid);
+  });
+});
+
+async function enterPyramidCutscene(pyramid) {
+  if (inTransition) return;
+  inTransition = true;
+  input.exitPointerLock();
+  await portalTransition.playTransition(async () => {
+    console.log(`Entering ${pyramid.name}...`);
+  });
+  // Cutscene plays after the fade-in completes, over the now-visible scene,
+  // then we snap to the "interior" (placeholder: just inside the doorway —
+  // real interior geometry is a later addition once this phase is polished).
+  await playPyramidCutscene(camera, pyramid);
+  console.log(`${pyramid.name}: interior not built yet — placeholder position only.`);
+  inTransition = false;
+}
 
 // Debug: press H to take 2 damage, for testing the health/death flow
 // until real damage sources (crocodiles, etc.) exist in later phases.

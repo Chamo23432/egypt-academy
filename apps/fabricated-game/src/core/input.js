@@ -11,6 +11,7 @@ export function createInput(canvas, callbacks = {}) {
   };
 
   let pointerLocked = false;
+  let intentionalExit = false;
   let yaw = 0;
   let pitch = 0;
   const PITCH_LIMIT = Math.PI / 2 - 0.05;
@@ -31,7 +32,12 @@ export function createInput(canvas, callbacks = {}) {
         if (callbacks.onDrop) callbacks.onDrop();
         break;
       case "Escape":
-        if (callbacks.onPauseToggle) callbacks.onPauseToggle();
+        // While pointer-locked, browsers force-exit lock on Escape and may
+        // suppress this keydown entirely — the reliable path is detecting
+        // the resulting pointerlockchange below. This handles the case
+        // where we're NOT locked (e.g. menu already open, toggling closed
+        // via Escape) so Escape still works to resume from the pause menu.
+        if (!pointerLocked && callbacks.onPauseToggle) callbacks.onPauseToggle();
         break;
     }
   }
@@ -57,8 +63,17 @@ export function createInput(canvas, callbacks = {}) {
   }
 
   function onPointerLockChange() {
+    const wasLocked = pointerLocked;
     pointerLocked = document.pointerLockElement === canvas;
     if (callbacks.onPointerLockChange) callbacks.onPointerLockChange(pointerLocked);
+
+    // If we just lost lock and it wasn't us calling exitPointerLock()
+    // ourselves, the browser force-exited it — almost always via Escape.
+    // That's our real signal to open the pause menu.
+    if (wasLocked && !pointerLocked && !intentionalExit) {
+      if (callbacks.onPauseToggle) callbacks.onPauseToggle();
+    }
+    intentionalExit = false;
   }
 
   canvas.addEventListener("click", () => {
@@ -77,6 +92,9 @@ export function createInput(canvas, callbacks = {}) {
     getYaw: () => yaw,
     getPitch: () => pitch,
     isPointerLocked: () => pointerLocked,
-    exitPointerLock: () => document.exitPointerLock(),
+    exitPointerLock: () => {
+      intentionalExit = true;
+      document.exitPointerLock();
+    },
   };
 }

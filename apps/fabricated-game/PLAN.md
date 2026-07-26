@@ -123,11 +123,29 @@ Sections (contents TBD, placeholders for now):
 - Fade transition system (portal-transition.js) is generic/reusable —
   the pyramid cutscene system in Phase 5 can build on the same pattern
 
-### Phase 5 — Pyramids world
-- Desert terrain + trail from spawn to pyramids
-- Pyramid exteriors (multiple, right-clickable)
-- Per-pyramid cutscene system (fade out/in + scripted camera sequence)
-- Pyramid interiors (basic empty interior shell first)
+### Bugfix — Pause menu not opening
+- Root cause: while pointer-locked, browsers force-exit lock on Escape and
+  can suppress the Escape `keydown` event entirely, so the old
+  `onPauseToggle` (wired only to keydown) never fired
+- Fix: input.js now distinguishes an intentional `exitPointerLock()` call
+  from the browser's own forced exit. On an unintentional loss of lock
+  (i.e. the player pressed Escape), it fires `onPauseToggle` itself. The
+  keydown Escape handler still covers the case where Escape is pressed
+  while NOT locked (e.g. closing the menu after it's already open)
+
+### Phase 5 — Pyramids world ✅ DONE (Phase 5 baseline)
+- Desert ground plane + a visible trail strip from the hub-facing spawn
+  point toward the pyramid cluster
+- 3 pyramids (cone-with-4-sides geometry), each with a distinct name:
+  Pyramid of the Dawn, Great Pyramid, Pyramid of the Dusk
+- Right-click near a pyramid (within interact range) triggers entry
+- Cutscene system: each pyramid has its own distinct scripted camera path
+  (different angles/approach per the "each cutscene is different" request),
+  built on top of the same fade-to-black transition used for portals
+- Pyramid interiors are still placeholder (camera just ends up just inside
+  the doorway) — actual interior geometry/rooms are a later polish pass
+- World visibility is toggled (pyramidsWorld.setActive) rather than the
+  hub and pyramids both always existing in the scene at once
 
 ### Phase 6 — Nile world
 - Forest spawn + trail to riverbank
