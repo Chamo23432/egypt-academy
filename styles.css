@@ -843,9 +843,11 @@ button:focus-visible, .hotspot:focus-visible {
 .cosmo-shadow { fill: rgba(0,0,0,0.25); }
 .cosmo-body { fill: var(--cosmo-body, #f0c14b); }
 .cosmo-eye { fill: var(--cosmo-accent, #0d1b2a); }
-.cosmo-brow { stroke: var(--cosmo-accent, #0d1b2a); opacity: 0; }
+.cosmo-brow circle { fill: var(--cosmo-body, #f0c14b); stroke: var(--cosmo-accent, #0d1b2a); stroke-width: 1.5; opacity: 0.9; }
 .cosmo-mouth { stroke: var(--cosmo-accent, #0d1b2a); }
 .cosmo-arm { stroke: var(--cosmo-body, #f0c14b); }
+.cosmo-ridge { stroke: var(--cosmo-accent, #0d1b2a); opacity: 0.55; }
+.cosmo-tail { stroke: var(--cosmo-body, #f0c14b); }
 .cosmo-blush { display: none; }
 
 /* Base gentle bob, all moods */
@@ -896,9 +898,9 @@ button:focus-visible, .hotspot:focus-visible {
   d: path("M 42 66 Q 50 60 58 66");
 }
 .cosmo-sprite[data-mood="sad"] .cosmo-brow-l,
-.cosmo-sprite[data-mood="sad"] .cosmo-brow-r { opacity: 0.8; }
-.cosmo-sprite[data-mood="sad"] .cosmo-brow-l { d: path("M 33 44 Q 38 47 44 45"); }
-.cosmo-sprite[data-mood="sad"] .cosmo-brow-r { d: path("M 56 45 Q 62 47 67 44"); }
+.cosmo-sprite[data-mood="sad"] .cosmo-brow-r { opacity: 0.7; }
+.cosmo-sprite[data-mood="sad"] .cosmo-brow-l { transform: rotate(-8deg); transform-origin: 40px 46px; }
+.cosmo-sprite[data-mood="sad"] .cosmo-brow-r { transform: rotate(8deg); transform-origin: 60px 46px; }
 .cosmo-sprite[data-mood="sad"] .cosmo-bob { animation: cosmo-sad-droop 3.8s ease-in-out infinite; }
 @keyframes cosmo-sad-droop {
   0%, 100% { transform: translateY(0) rotate(0deg); }
@@ -911,8 +913,8 @@ button:focus-visible, .hotspot:focus-visible {
 }
 .cosmo-sprite[data-mood="angry"] .cosmo-brow-l,
 .cosmo-sprite[data-mood="angry"] .cosmo-brow-r { opacity: 0.9; }
-.cosmo-sprite[data-mood="angry"] .cosmo-brow-l { d: path("M 33 46 Q 39 41 45 44"); }
-.cosmo-sprite[data-mood="angry"] .cosmo-brow-r { d: path("M 55 44 Q 61 41 67 46"); }
+.cosmo-sprite[data-mood="angry"] .cosmo-brow-l { transform: rotate(-14deg); transform-origin: 40px 46px; }
+.cosmo-sprite[data-mood="angry"] .cosmo-brow-r { transform: rotate(14deg); transform-origin: 60px 46px; }
 .cosmo-sprite[data-mood="angry"] .cosmo-bob { animation-duration: 1.3s; }
 
 /* ---------- CHILL (Moonlight) ---------- */

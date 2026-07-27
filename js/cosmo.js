@@ -108,19 +108,32 @@ const Cosmo = (() => {
   function spriteInnerHtml() {
     return `
       <svg viewBox="0 0 100 100" class="cosmo-svg">
-        <ellipse class="cosmo-shadow" cx="50" cy="92" rx="22" ry="5"></ellipse>
+        <ellipse class="cosmo-shadow" cx="50" cy="92" rx="24" ry="5"></ellipse>
         <g class="cosmo-bob">
-          <circle class="cosmo-body" cx="50" cy="55" r="30"></circle>
+          <!-- curled chameleon tail -->
+          <path class="cosmo-tail" d="M 74 70 Q 90 68 88 56 Q 87 48 78 50" fill="none" stroke-width="7" stroke-linecap="round"></path>
+          <!-- back ridge spikes -->
+          <path class="cosmo-ridge" d="M 34 32 L 37 26 L 41 32 L 45 25 L 49 32 L 53 25 L 57 32" fill="none" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"></path>
+          <!-- body (elongated for a chameleon silhouette) -->
+          <ellipse class="cosmo-body" cx="48" cy="58" rx="26" ry="26"></ellipse>
+          <!-- snout -->
+          <path class="cosmo-body" d="M 22 56 Q 8 56 8 60 Q 8 64 22 64 Z"></path>
           <g class="cosmo-face">
-            <path class="cosmo-brow cosmo-brow-l" d="M 33 42 Q 38 40 44 42" fill="none" stroke-width="2.4" stroke-linecap="round"></path>
-            <path class="cosmo-brow cosmo-brow-r" d="M 56 42 Q 62 40 67 42" fill="none" stroke-width="2.4" stroke-linecap="round"></path>
-            <circle class="cosmo-eye cosmo-eye-l" cx="40" cy="50" r="4.5"></circle>
-            <circle class="cosmo-eye cosmo-eye-r" cx="60" cy="50" r="4.5"></circle>
+            <!-- cone eyes that swivel independently, chameleon-style -->
+            <g class="cosmo-brow cosmo-brow-l">
+              <circle cx="40" cy="46" r="9"></circle>
+            </g>
+            <g class="cosmo-brow cosmo-brow-r">
+              <circle cx="60" cy="46" r="9"></circle>
+            </g>
+            <circle class="cosmo-eye cosmo-eye-l" cx="40" cy="46" r="4"></circle>
+            <circle class="cosmo-eye cosmo-eye-r" cx="60" cy="46" r="4"></circle>
             <path class="cosmo-blush cosmo-blush-l" cx="30" cy="58"></path>
-            <path class="cosmo-mouth" d="M 42 63 Q 50 70 58 63" fill="none" stroke-width="3" stroke-linecap="round"></path>
+            <path class="cosmo-mouth" d="M 20 61 Q 30 66 40 62" fill="none" stroke-width="2.4" stroke-linecap="round"></path>
           </g>
-          <path class="cosmo-arm cosmo-arm-l" d="M 25 58 Q 15 65 18 75" fill="none" stroke-width="6" stroke-linecap="round"></path>
-          <path class="cosmo-arm cosmo-arm-r" d="M 75 58 Q 85 65 82 75" fill="none" stroke-width="6" stroke-linecap="round"></path>
+          <!-- gripping curled feet, chameleon-style -->
+          <path class="cosmo-arm cosmo-arm-l" d="M 30 78 Q 22 84 26 90 Q 30 93 34 88" fill="none" stroke-width="6" stroke-linecap="round"></path>
+          <path class="cosmo-arm cosmo-arm-r" d="M 66 78 Q 74 84 70 90 Q 66 93 62 88" fill="none" stroke-width="6" stroke-linecap="round"></path>
         </g>
       </svg>
     `;

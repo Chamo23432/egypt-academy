@@ -95,7 +95,7 @@
   const resetBtn = document.getElementById("cosmo-reset-btn");
   const COSMO_DEFAULTS = { enabled: false, theme: "classic", size: 56, sillyLevel: 50, soundsEnabled: true, quizHelpEnabled: true };
   resetBtn.addEventListener("click", () => {
-    if (!confirm("Reset Cosmo to default settings?")) return;
+    if (!confirm("Reset Chameleo to default settings?")) return;
     localSettings = Object.assign({}, COSMO_DEFAULTS);
     renderThemeGrid();
     sizeSlider.value = localSettings.size;

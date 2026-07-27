@@ -37,14 +37,6 @@ const EgyptAcademy = (() => {
   window.markLessonComplete = markComplete;
 
   /* ---------- View switching (inside main app) ---------- */
-  function switchChameleoTab(tabId) {
-    document.querySelectorAll(".chameleo-tab").forEach(btn => {
-      btn.classList.toggle("active", btn.dataset.chameleoTab === tabId);
-    });
-    document.querySelectorAll(".chameleo-tab-panel").forEach(panel => {
-      panel.style.display = panel.dataset.chameleoPanel === tabId ? "" : "none";
-    });
-  }
 
   function showView(viewId) {
     document.querySelectorAll(".view").forEach(v => v.classList.remove("active"));
@@ -64,7 +56,6 @@ const EgyptAcademy = (() => {
       loadContentApp("cosmo", "cosmo-content", () => {
         if (window.Cosmo) window.Cosmo.enterFrame();
       });
-      loadContentApp("kiwo", "kiwo-content");
     }
     if (viewId === "view-settings") loadContentApp("settings", "settings-content");
     if (viewId === "view-devtools") loadContentApp("devtools", "devtools-content");
@@ -251,7 +242,7 @@ const EgyptAcademy = (() => {
     },
     {
       title: "Quizzes and hints",
-      body: "Each lesson has a matching quiz. If you're stuck, Cosmo can offer a hint after a few seconds.",
+      body: "Each lesson has a matching quiz. If you're stuck, Chameleo can offer a hint after a few seconds.",
       preview: () => `
         <div class="tour-demo-quiz">
           <span class="tour-demo-quiz-q">Who built the Great Pyramid?</span>
@@ -263,8 +254,8 @@ const EgyptAcademy = (() => {
         </div>`
     },
     {
-      title: "Cosmo, your companion",
-      body: "Cosmo can float around your screen and cheer you on. Customize his look, size, and behavior anytime in the Cosmo app.",
+      title: "Chameleo, your companion",
+      body: "Chameleo can float around your screen and cheer you on. Customize his look, size, and behavior anytime in the Chameleo app.",
       preview: () => {
         const inner = window.Cosmo ? window.Cosmo.spriteInnerHtml() : "";
         return `<div class="cosmo-sprite tour-demo-cosmo-sprite" data-mood="happy">${inner}</div>`;
@@ -792,16 +783,12 @@ const EgyptAcademy = (() => {
     document.querySelectorAll(".nav-links button[data-view]").forEach(btn => {
       btn.addEventListener("click", () => showView(btn.dataset.view));
     });
-    document.querySelectorAll(".chameleo-tab").forEach(btn => {
-      btn.addEventListener("click", () => switchChameleoTab(btn.dataset.chameleoTab));
-    });
     initSearch();
     initMobileNav();
     if (window.Kiwo) {
-      window.Kiwo.init(["kiwo-launcher-btn", "mobile-notch-kiwo-btn"], () => {
-        showView("view-chameleo");
-        switchChameleoTab("kiwo");
-      });
+      // No standalone Kiwo app/launcher anymore — this just wires up the
+      // voice-overlay engine that Chameleo's hold-C uses.
+      window.Kiwo.init([], () => {});
     }
     if (window.Credits) window.Credits.checkUnlock();
     showView("view-dashboard");
