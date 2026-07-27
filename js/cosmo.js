@@ -74,7 +74,7 @@ const Cosmo = (() => {
   };
 
   let settings = loadSettings();
-  let root, sprite, bubble;
+  let root, sprite, bubble, chatBubble, chatInput;
   let mouseX = window.innerWidth / 2, mouseY = window.innerHeight / 2;
   let posX = mouseX, posY = mouseY;
   let following = true;
@@ -131,9 +131,14 @@ const Cosmo = (() => {
     root.innerHTML = `
       <div id="cosmo-sprite" class="cosmo-sprite">${spriteInnerHtml()}</div>
       <div id="cosmo-bubble" class="cosmo-bubble" style="display:none;"></div>
+      <div id="cosmo-chat-bubble" class="cosmo-chat-bubble" style="display:none;">
+        <input type="text" id="cosmo-chat-input" class="cosmo-chat-input" placeholder="Ask Cosmo..." autocomplete="off" />
+      </div>
     `;
     sprite = document.getElementById("cosmo-sprite");
     bubble = document.getElementById("cosmo-bubble");
+    chatBubble = document.getElementById("cosmo-chat-bubble");
+    chatInput = document.getElementById("cosmo-chat-input");
     applyThemeVisuals();
   }
 
@@ -322,9 +327,75 @@ const Cosmo = (() => {
     }
   }
 
+  /* ---------- C key: tap = text chat bubble, hold = voice mode ---------- */
+  let cKeyDown = false;
+  let cHoldTimer = null;
+  let voiceModeActive = false;
+  const HOLD_THRESHOLD = 350; // ms
+
+  function openChatBubble() {
+    if (!chatBubble || !settings.enabled) return;
+    chatBubble.style.display = "block";
+    chatBubble.style.left = posX + settings.size + 4 + "px";
+    chatBubble.style.top = Math.max(posY - 20, 10) + "px";
+    chatInput.value = "";
+    chatInput.focus();
+  }
+
+  function closeChatBubble() {
+    if (!chatBubble) return;
+    chatBubble.style.display = "none";
+    chatInput.blur();
+  }
+
+  function handleChatSubmit() {
+    const text = chatInput.value.trim();
+    if (!text) { closeChatBubble(); return; }
+    closeChatBubble();
+    const online = navigator.onLine;
+    const reply = window.KiwoBrain
+      ? window.KiwoBrain.respond(text, online, () => "I'm not sure about that, but ask me about your progress, the pyramids, or the Nile!")
+      : "I'm not able to respond right now.";
+    say(reply, 4200);
+  }
+
+  function onGlobalKeyDown(e) {
+    if (e.code !== "KeyC") return;
+    // Don't hijack C while the person is actually typing in the chat input
+    // or any other input/textarea on the page.
+    const tag = document.activeElement && document.activeElement.tagName;
+    if (tag === "INPUT" || tag === "TEXTAREA") return;
+    if (cKeyDown) return; // ignore key-repeat
+    cKeyDown = true;
+    cHoldTimer = setTimeout(() => {
+      voiceModeActive = true;
+      if (window.Kiwo) window.Kiwo.openVoiceOverlay();
+    }, HOLD_THRESHOLD);
+  }
+
+  function onGlobalKeyUp(e) {
+    if (e.code !== "KeyC") return;
+    if (!cKeyDown) return;
+    cKeyDown = false;
+    clearTimeout(cHoldTimer);
+    if (voiceModeActive) {
+      voiceModeActive = false;
+      if (window.Kiwo) window.Kiwo.closeVoiceOverlay();
+    } else {
+      openChatBubble();
+    }
+  }
+
   function init() {
     buildDom();
     document.addEventListener("mousemove", onMouseMove);
+    document.addEventListener("keydown", onGlobalKeyDown);
+    document.addEventListener("keyup", onGlobalKeyUp);
+    if (chatInput) {
+      chatInput.addEventListener("keydown", (e) => {
+        if (e.code === "Enter") { e.preventDefault(); handleChatSubmit(); }
+      });
+    }
     resetIdleTimer();
     requestAnimationFrame(tick);
   }

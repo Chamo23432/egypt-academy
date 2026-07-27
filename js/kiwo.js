@@ -315,7 +315,7 @@ const Kiwo = (() => {
     }, { passive: true });
   }
 
-  return { init, isOnline, modeLabel, closeVoiceOverlay };
+  return { init, isOnline, modeLabel, openVoiceOverlay, closeVoiceOverlay };
 })();
 
 window.Kiwo = Kiwo;
