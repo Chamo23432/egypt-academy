@@ -275,6 +275,47 @@ html, body {
   font-size: 0.85rem;
 }
 
+/* Notification toast popup */
+.notif-toast-root {
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+  z-index: 400;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  pointer-events: none;
+}
+.notif-toast {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  background: rgba(13, 27, 42, 0.95);
+  border: 1px solid var(--glass-border);
+  border-radius: 12px;
+  padding: 0.7rem 1rem;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+  color: var(--text-100, #eee);
+  font-family: var(--font-ui);
+  font-size: 0.85rem;
+  max-width: 280px;
+  opacity: 0;
+  transform: translateX(20px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+.notif-toast.visible {
+  opacity: 1;
+  transform: translateX(0);
+}
+.notif-toast-icon {
+  color: var(--gold-400);
+  flex-shrink: 0;
+  display: flex;
+}
+.notif-toast-text {
+  line-height: 1.3;
+}
+
 .brand {
   font-family: var(--font-display);
   letter-spacing: 0.08em;
@@ -370,69 +411,38 @@ html, body {
   padding: 0.9rem 1.2rem;
 }
 
-/* ============ Fabricith ============ */
-.fabricith-app {
-  display: grid;
-  grid-template-columns: 220px 1fr;
-  gap: 1.5rem;
-  max-width: 1100px;
+/* ============ Chameleo (merged Cosmo + Kiwo folder) ============ */
+.chameleo-app {
+  max-width: 900px;
   margin: 5rem auto 2rem;
   padding: 0 2rem;
 }
 @media (max-width: 720px) {
-  .fabricith-app { grid-template-columns: 1fr; margin-top: 1rem; }
+  .chameleo-app { margin-top: 1rem; }
 }
-.fabricith-filters h3 {
-  margin: 0 0 1rem;
-  font-family: var(--font-display);
-  color: var(--gold-400);
-  font-size: 1rem;
-}
-.fabricith-filter-group {
+.chameleo-tabs {
   display: flex;
-  flex-direction: column;
-  gap: 0.6rem;
-}
-.fabricith-filter-label {
-  font-size: 0.75rem;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  color: var(--text-300);
-  margin-bottom: 0.2rem;
-}
-.fabricith-filter-group label {
-  display: flex;
-  align-items: center;
   gap: 0.5rem;
-  font-size: 0.85rem;
-  color: var(--text-300);
+  margin-bottom: 1.2rem;
+  border-bottom: 1px solid var(--glass-border);
 }
-.fabricith-main {
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-}
-.fabricith-searchbar {
-  display: flex;
-  align-items: center;
-  gap: 0.6rem;
-  padding: 0.8rem 1.2rem;
-  color: var(--text-300);
-}
-.fabricith-searchbar input {
-  flex: 1;
+.chameleo-tab {
+  font-family: var(--font-ui);
   background: transparent;
   border: none;
-  outline: none;
-  color: var(--text-100, #eee);
-  font-size: 0.95rem;
-  font-family: var(--font-ui);
-}
-.fabricith-empty-state {
-  text-align: center;
-  padding: 4rem 1rem;
+  border-bottom: 2px solid transparent;
   color: var(--text-300);
-  font-family: var(--font-ui);
+  padding: 0.6rem 1.2rem;
+  cursor: pointer;
+  font-size: 0.95rem;
+  transition: color 0.2s var(--ease), border-color 0.2s var(--ease);
+}
+.chameleo-tab:hover {
+  color: var(--gold-400);
+}
+.chameleo-tab.active {
+  color: var(--gold-400);
+  border-bottom-color: var(--gold-400);
 }
 
 /* ============ Views ============ */

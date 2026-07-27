@@ -26,10 +26,26 @@ const EgyptAcademy = (() => {
       const nowComplete = allIds.every(id => progress[id]);
       window.Cosmo.reactTo(nowComplete ? "allComplete" : "lessonComplete");
     }
+
+    const quizEntry = (DATA.quizzes || []).find(q => q.appId === appId);
+    if (quizEntry) {
+      pushNotification(`${quizEntry.label} submitted successfully.`);
+    } else {
+      pushNotification("Lesson completed.");
+    }
   }
   window.markLessonComplete = markComplete;
 
   /* ---------- View switching (inside main app) ---------- */
+  function switchChameleoTab(tabId) {
+    document.querySelectorAll(".chameleo-tab").forEach(btn => {
+      btn.classList.toggle("active", btn.dataset.chameleoTab === tabId);
+    });
+    document.querySelectorAll(".chameleo-tab-panel").forEach(panel => {
+      panel.style.display = panel.dataset.chameleoPanel === tabId ? "" : "none";
+    });
+  }
+
   function showView(viewId) {
     document.querySelectorAll(".view").forEach(v => v.classList.remove("active"));
     const el = document.getElementById(viewId);
@@ -42,14 +58,16 @@ const EgyptAcademy = (() => {
     });
     window.scrollTo(0, 0);
 
-    if (viewId !== "view-cosmo" && window.Cosmo) window.Cosmo.exitFrame();
+    if (viewId !== "view-chameleo" && window.Cosmo) window.Cosmo.exitFrame();
 
-    if (viewId === "view-cosmo") loadContentApp("cosmo", "cosmo-content", () => {
-      if (window.Cosmo) window.Cosmo.enterFrame();
-    });
+    if (viewId === "view-chameleo") {
+      loadContentApp("cosmo", "cosmo-content", () => {
+        if (window.Cosmo) window.Cosmo.enterFrame();
+      });
+      loadContentApp("kiwo", "kiwo-content");
+    }
     if (viewId === "view-settings") loadContentApp("settings", "settings-content");
     if (viewId === "view-devtools") loadContentApp("devtools", "devtools-content");
-    if (viewId === "view-kiwo") loadContentApp("kiwo", "kiwo-content");
     const topbar = document.querySelector(".topbar");
     const userTopbar = document.querySelector(".top-userbar");
     const mobileNotch = document.querySelector(".mobile-notch");
@@ -619,6 +637,44 @@ const EgyptAcademy = (() => {
     }
   }
 
+  let notifications = [];
+  let renderNotifPanel = null;
+
+  function formatNotifTime() {
+    const now = new Date();
+    return now.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+  }
+
+  function pushNotification(title) {
+    notifications.unshift({ title, time: formatNotifTime() });
+    if (renderNotifPanel) renderNotifPanel();
+    showNotifToast(title);
+  }
+
+  function showNotifToast(title) {
+    let toastRoot = document.getElementById("notif-toast-root");
+    if (!toastRoot) {
+      toastRoot = document.createElement("div");
+      toastRoot.id = "notif-toast-root";
+      toastRoot.className = "notif-toast-root";
+      document.body.appendChild(toastRoot);
+    }
+    const toast = document.createElement("div");
+    toast.className = "notif-toast";
+    toast.innerHTML = `
+      <span class="notif-toast-icon">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+      </span>
+      <span class="notif-toast-text">${title}</span>
+    `;
+    toastRoot.appendChild(toast);
+    requestAnimationFrame(() => toast.classList.add("visible"));
+    setTimeout(() => {
+      toast.classList.remove("visible");
+      setTimeout(() => toast.remove(), 300);
+    }, 3500);
+  }
+
   function initNotifications() {
     const bell = document.getElementById("top-userbar-bell");
     const panel = document.getElementById("notif-panel");
@@ -626,12 +682,6 @@ const EgyptAcademy = (() => {
     const dot = document.getElementById("notif-dot");
     const clearBtn = document.getElementById("notif-clear-btn");
     if (!bell || !panel || !list) return;
-
-    let notifications = [
-      { title: "Welcome to Egypt Academy!", time: "Just now" },
-      { title: "You completed the Khufu lesson.", time: "Today" },
-      { title: "New quiz available: The Nile River.", time: "Yesterday" }
-    ];
 
     function render() {
       if (notifications.length === 0) {
@@ -647,6 +697,7 @@ const EgyptAcademy = (() => {
         </div>
       `).join("");
     }
+    renderNotifPanel = render;
 
     bell.addEventListener("click", (e) => {
       e.stopPropagation();
@@ -741,10 +792,16 @@ const EgyptAcademy = (() => {
     document.querySelectorAll(".nav-links button[data-view]").forEach(btn => {
       btn.addEventListener("click", () => showView(btn.dataset.view));
     });
+    document.querySelectorAll(".chameleo-tab").forEach(btn => {
+      btn.addEventListener("click", () => switchChameleoTab(btn.dataset.chameleoTab));
+    });
     initSearch();
     initMobileNav();
     if (window.Kiwo) {
-      window.Kiwo.init(["kiwo-launcher-btn", "mobile-notch-kiwo-btn"], () => showView("view-kiwo"));
+      window.Kiwo.init(["kiwo-launcher-btn", "mobile-notch-kiwo-btn"], () => {
+        showView("view-chameleo");
+        switchChameleoTab("kiwo");
+      });
     }
     if (window.Credits) window.Credits.checkUnlock();
     showView("view-dashboard");

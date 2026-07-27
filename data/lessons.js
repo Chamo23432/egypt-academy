@@ -81,10 +81,9 @@ window.EGYPT_ACADEMY_DATA = {
   searchIndex: [
     { label: "Dashboard", type: "view", target: "view-dashboard" },
     { label: "Quizzes", type: "view", target: "view-quizzes" },
-    { label: "Cosmo", type: "view", target: "view-cosmo" },
+    { label: "Chameleo", type: "view", target: "view-chameleo" },
     { label: "Profile", type: "view", target: "view-settings" },
     { label: "Settings", type: "view", target: "view-settings" },
-    { label: "Kiwo", type: "view", target: "view-kiwo" },
     { label: "Giza Plateau (pyramids)", type: "scene", target: "pyramids" },
     { label: "The Nile River (scene)", type: "scene", target: "nile" },
     { label: "Great Pyramid of Khufu", type: "lesson", target: "pyramid-khufu" },
