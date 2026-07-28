@@ -243,8 +243,8 @@ const EgyptAcademy = (() => {
       }
     },
     {
-      title: "Chatting with Kiwo",
-      body: "Tap Kiwo's icon in the top bar to open a full chat — ask questions, upload files, and revisit past conversations.",
+      title: "Chatting with Chameleo",
+      body: "Press the C key to open a full chat with Chameleo — ask questions, upload files, and revisit past conversations.",
       preview: () => `
         <div class="tour-demo-chat">
           <span class="tour-demo-bubble tour-bubble-user">Tell me about the pyramids</span>
@@ -252,22 +252,12 @@ const EgyptAcademy = (() => {
         </div>`
     },
     {
-      title: "Talking to Kiwo",
-      body: "Hold Kiwo's icon down and swipe downward to open voice mode — he starts listening right away and replies out loud.",
+      title: "Talking to Chameleo",
+      body: "Hold the C key down to open voice mode — Chameleo starts listening right away and replies out loud.",
       preview: () => `
         <div class="tour-demo-mic-wrap">
           <div class="tour-demo-mic tour-mic-swipe"></div>
-          <span class="tour-demo-arrow">hold, then swipe down &#8595;</span>
-        </div>`
-    },
-    {
-      title: "Themes anytime",
-      body: "Switch between Default, Dark, and Light whenever you like from the Settings app — no need to redo setup.",
-      preview: () => `
-        <div class="tour-demo-theme-swatches">
-          <span class="tour-demo-swatch tour-swatch-active" style="background:linear-gradient(135deg,#0d1b2a,#d4a017)"></span>
-          <span class="tour-demo-swatch" style="background:linear-gradient(135deg,#05090d,#f0c14b)"></span>
-          <span class="tour-demo-swatch" style="background:linear-gradient(135deg,#f3e6c8,#a9720c)"></span>
+          <span class="tour-demo-arrow">hold C</span>
         </div>`
     }
   ];
