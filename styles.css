@@ -1,27 +1,53 @@
 /* ============================================
    EGYPT ACADEMY — Design tokens
-   Palette: papyrus sand, lapis night, gold leaf, carnelian
+   Abstract illustration system: teal, cream, terracotta,
+   mustard, sage, dusty coral, slate blue, charcoal.
+   Single theme only — no theme switching.
    ============================================ */
 :root {
-  --sand-100: #f3e6c8;
-  --sand-300: #e3c98f;
-  --night-900: #0d1b2a;
-  --night-800: #142b40;
-  --lapis-600: #1b4965;
-  --gold-500: #d4a017;
-  --gold-400: #f0c14b;
-  --carnelian-500: #c1440e;
-  --glass-bg: rgba(20, 43, 64, 0.45);
-  --glass-bg-light: rgba(243, 230, 200, 0.12);
-  --glass-border: rgba(240, 193, 75, 0.35);
-  --text-100: #f7f1e1;
-  --text-300: #cdd9e0;
-  --font-display: "Cinzel", "Trajan Pro", serif;
-  --font-body: "Frank Ruhl Libre", Georgia, serif;
+  --teal-900: #0e2e2c;
+  --teal-700: #15514b;
+  --teal-500: #1f7a6e;
+  --teal-200: #cfe6e0;
+  --cream-100: #fbf6ec;
+  --cream-200: #f3ecdd;
+  --terracotta-600: #c6633f;
+  --terracotta-400: #de8b62;
+  --mustard-500: #d9a441;
+  --sage-500: #7c9a73;
+  --sage-200: #dce6d6;
+  --coral-500: #d97362;
+  --slate-600: #5a6b84;
+  --charcoal-900: #26241e;
+  --charcoal-600: #5c594e;
+
+  /* legacy-compatible aliases so existing rules keep working during rollout */
+  --sand-100: var(--cream-100);
+  --sand-300: var(--cream-200);
+  --night-900: var(--charcoal-900);
+  --night-800: var(--teal-900);
+  --lapis-600: var(--slate-600);
+  --gold-500: var(--mustard-500);
+  --gold-400: var(--terracotta-400);
+  --carnelian-500: var(--terracotta-600);
+  --glass-bg: rgba(14, 46, 44, 0.06);
+  --glass-bg-light: rgba(255, 255, 255, 0.6);
+  --glass-border: rgba(38, 36, 30, 0.08);
+  --text-100: var(--charcoal-900);
+  --text-300: var(--charcoal-600);
+
+  --font-display: "Fraunces", Georgia, serif;
+  --font-body: "Inter", system-ui, sans-serif;
   --font-ui: "Inter", system-ui, sans-serif;
+  --radius-lg: 28px;
+  --radius-md: 18px;
+  --radius-sm: 12px;
   --radius: 18px;
+  --shadow-soft: 0 8px 30px rgba(38, 36, 30, 0.08);
   --ease: cubic-bezier(0.22, 1, 0.36, 1);
 }
+
+body { background: var(--cream-100); color: var(--charcoal-900); }
 
 * { box-sizing: border-box; }
 
