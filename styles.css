@@ -73,14 +73,14 @@ input[type="text"]:focus, input[type="password"]:focus, input[type="email"]:focu
 
 
 ::-webkit-scrollbar { width: 12px; height: 12px; }
-::-webkit-scrollbar-track { background: var(--night-900); }
+::-webkit-scrollbar-track { background: var(--cream-200); }
 ::-webkit-scrollbar-thumb {
-  background: linear-gradient(180deg, var(--gold-500), var(--carnelian-500));
+  background: var(--terracotta-400);
   border-radius: 999px;
-  border: 3px solid var(--night-900);
+  border: 3px solid var(--cream-200);
 }
-::-webkit-scrollbar-thumb:hover { background: var(--gold-400); }
-html { scrollbar-color: var(--gold-500) var(--night-900); scrollbar-width: thin; }
+::-webkit-scrollbar-thumb:hover { background: var(--terracotta-600); }
+html { scrollbar-color: var(--terracotta-400) var(--cream-200); scrollbar-width: thin; }
 
 html, body {
   margin: 0;
@@ -169,20 +169,20 @@ html, body {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: var(--glass-bg-light);
-  color: var(--gold-400);
+  background: var(--sage-200);
+  color: var(--teal-900);
   font-size: 1rem;
 }
 .top-userbar-name {
   font-family: var(--font-ui);
   font-size: 0.9rem;
-  color: var(--text-100);
+  color: var(--charcoal-900);
 }
 .top-userbar-bell {
   position: relative;
   background: transparent;
   border: none;
-  color: var(--text-300);
+  color: var(--charcoal-600);
   cursor: pointer;
   padding: 0.4rem;
   border-radius: 999px;
@@ -190,8 +190,8 @@ html, body {
   transition: all 0.25s var(--ease);
 }
 .top-userbar-bell:hover {
-  color: var(--gold-400);
-  background: var(--glass-bg-light);
+  color: var(--terracotta-600);
+  background: var(--cream-200);
 }
 .notif-dot {
   position: absolute;
@@ -340,10 +340,10 @@ html, body {
 .nav-links button {
   font-family: var(--font-ui);
   background: transparent;
-  border: 1px solid transparent;
-  color: var(--text-300);
+  border: none;
+  color: var(--charcoal-600);
   padding: 0.6rem 0.4rem;
-  border-radius: 14px;
+  border-radius: var(--radius-sm);
   cursor: pointer;
   font-size: 0.65rem;
   display: flex;
@@ -356,26 +356,24 @@ html, body {
 .nav-links button .nav-label { line-height: 1; }
 .nav-links button:hover,
 .nav-links button.active {
-  color: var(--gold-400);
-  border-color: var(--glass-border);
-  background: var(--glass-bg-light);
+  color: var(--terracotta-600);
+  background: var(--cream-200);
 }
 
 .sidebar-search-icon {
   margin-top: 0.5rem;
   flex-shrink: 0;
   background: transparent;
-  border: 1px solid transparent;
-  color: var(--text-300);
+  border: none;
+  color: var(--charcoal-600);
   padding: 0.6rem;
   border-radius: 999px;
   cursor: pointer;
   transition: all 0.25s var(--ease);
 }
 .sidebar-search-icon:hover {
-  color: var(--gold-400);
-  border-color: var(--glass-border);
-  background: var(--glass-bg-light);
+  color: var(--terracotta-600);
+  background: var(--cream-200);
 }
 
 /* ============ Centered search overlay ============ */
@@ -468,15 +466,43 @@ html, body {
 .dashboard-hero {
   text-align: center;
   padding: 2.5rem 1.5rem;
+  position: relative;
+  overflow: hidden;
+}
+.dashboard-hero::before {
+  content: "";
+  position: absolute;
+  top: -60px; left: -60px;
+  width: 160px; height: 160px;
+  border-radius: 50%;
+  background: var(--sage-200);
+  opacity: 0.6;
+  z-index: 0;
+}
+.dashboard-hero::after {
+  content: "";
+  position: absolute;
+  bottom: -70px; right: -50px;
+  width: 180px; height: 180px;
+  border-radius: 50%;
+  background: var(--teal-200);
+  opacity: 0.5;
+  z-index: 0;
+}
+.dashboard-hero h1,
+.dashboard-hero p {
+  position: relative;
+  z-index: 1;
 }
 .dashboard-hero h1 {
   font-family: var(--font-display);
+  font-weight: 600;
   font-size: clamp(1.8rem, 4vw, 2.8rem);
-  color: var(--gold-400);
+  color: var(--teal-900);
   margin: 0 0 0.5rem;
 }
 .dashboard-hero p {
-  color: var(--text-300);
+  color: var(--charcoal-600);
   margin: 0;
 }
 
@@ -497,11 +523,12 @@ html, body {
   display: flex;
   align-items: flex-end;
   padding: 0;
+  border-radius: var(--radius-lg);
   transition: transform 0.35s cubic-bezier(0.22,1,0.36,1), box-shadow 0.35s ease;
 }
 .wallpaper-card:hover {
   transform: translateY(-4px);
-  box-shadow: 0 16px 40px rgba(0,0,0,0.4);
+  box-shadow: var(--shadow-soft);
 }
 .wallpaper-card img {
   position: absolute;
@@ -515,21 +542,23 @@ html, body {
 .wallpaper-card .overlay-gradient {
   position: absolute;
   inset: 0;
-  background: linear-gradient(to top, rgba(13,27,42,0.9), rgba(13,27,42,0.1) 60%);
+  background: linear-gradient(to top, rgba(14,46,44,0.85), rgba(14,46,44,0.08) 60%);
 }
 .wallpaper-card .card-label {
   position: relative;
   z-index: 2;
   padding: 1.2rem;
   font-family: var(--font-display);
+  font-weight: 600;
   font-size: 1.2rem;
-  color: var(--gold-400);
+  color: var(--cream-100);
 }
 
 .progress-panel { }
 .progress-panel h2 {
   font-family: var(--font-display);
-  color: var(--gold-400);
+  font-weight: 600;
+  color: var(--teal-900);
   margin-top: 0;
   font-size: 1.2rem;
 }
@@ -540,17 +569,19 @@ html, body {
   gap: 0.75rem;
   font-family: var(--font-ui);
   font-size: 0.9rem;
+  color: var(--charcoal-900);
 }
 .progress-row .bar-track {
   flex: 1;
   height: 8px;
   border-radius: 999px;
-  background: rgba(255,255,255,0.1);
+  background: var(--cream-200);
   overflow: hidden;
 }
 .progress-row .bar-fill {
   height: 100%;
-  background: linear-gradient(90deg, var(--gold-500), var(--carnelian-500));
+  border-radius: 999px;
+  background: var(--terracotta-600);
 }
 
 /* ============ Interactive wallpaper (fullscreen scene) ============ */
@@ -577,7 +608,7 @@ html, body {
 .scene-dim {
   position: absolute;
   inset: 0;
-  background: linear-gradient(to bottom, rgba(13,27,42,0.55), rgba(13,27,42,0.15) 30%, rgba(13,27,42,0.65));
+  background: linear-gradient(to bottom, rgba(14,46,44,0.5), rgba(14,46,44,0.1) 30%, rgba(14,46,44,0.55));
   opacity: 0;
   animation: scene-dim-fade-in 1s ease-out 0.15s forwards;
 }
@@ -590,13 +621,13 @@ html, body {
   left: 1.5rem;
   z-index: 20;
   font-family: var(--font-ui);
-  background: var(--glass-bg);
-  border: 1px solid var(--glass-border);
-  color: var(--text-100);
+  background: #ffffff;
+  border: none;
+  color: var(--teal-900);
   padding: 0.55rem 1.1rem;
   border-radius: 999px;
   cursor: pointer;
-  backdrop-filter: blur(10px);
+  box-shadow: var(--shadow-soft);
   opacity: 0;
   animation: scene-fade-in 0.6s ease-out 0.4s forwards;
 }
@@ -610,7 +641,8 @@ html, body {
   transform: translateX(-50%) translateY(-10px);
   z-index: 20;
   font-family: var(--font-display);
-  color: var(--gold-400);
+  font-weight: 600;
+  color: var(--cream-100);
   text-align: center;
   padding: 0.5rem 1.2rem;
   opacity: 0;
@@ -641,18 +673,18 @@ html, body {
   width: 46px;
   height: 46px;
   border-radius: 50%;
-  border: 2px solid var(--gold-400);
-  background: rgba(240, 193, 75, 0.18);
+  border: none;
+  background: var(--terracotta-600);
   display: flex;
   align-items: center;
   justify-content: center;
   animation: pulse-glow 2.4s ease-in-out infinite;
   transition: transform 0.25s var(--ease), background 0.25s var(--ease);
 }
-.hotspot-marker svg { width: 22px; height: 22px; fill: var(--gold-400); }
+.hotspot-marker svg { width: 20px; height: 20px; fill: var(--cream-100); }
 .hotspot:hover .hotspot-marker {
   transform: scale(1.18);
-  background: rgba(240, 193, 75, 0.35);
+  background: var(--terracotta-400);
 }
 .hotspot-label {
   position: absolute;
@@ -662,10 +694,12 @@ html, body {
   white-space: nowrap;
   font-family: var(--font-ui);
   font-size: 0.78rem;
-  background: var(--glass-bg);
-  border: 1px solid var(--glass-border);
+  background: #ffffff;
+  color: var(--charcoal-900);
+  border: none;
   padding: 0.25rem 0.6rem;
   border-radius: 999px;
+  box-shadow: var(--shadow-soft);
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.2s var(--ease);
@@ -1970,26 +2004,27 @@ button:focus-visible, .hotspot:focus-visible {
     top: 0; left: 0; right: 0;
     z-index: 300;
     padding: 0.7rem 1rem;
-    background: rgba(13,27,42,0.85);
-    backdrop-filter: blur(14px);
-    border-bottom: 1px solid var(--glass-border);
+    background: #ffffff;
+    border-bottom: none;
+    box-shadow: var(--shadow-soft);
   }
   .mobile-notch-brand {
     font-family: var(--font-display);
-    color: var(--gold-400);
+    font-weight: 600;
+    color: var(--teal-900);
     font-size: 1rem;
     display: flex;
     align-items: center;
     gap: 0.4rem;
   }
-  .mobile-notch-brand .ankh { font-size: 1.1rem; }
+  .mobile-notch-brand .ankh { font-size: 1.1rem; color: var(--terracotta-600); }
   .mobile-notch-kiwo {
     width: 36px; height: 36px;
     border-radius: 50%;
-    border: 2px solid var(--glass-border);
+    border: none;
     padding: 0;
     overflow: hidden;
-    background: var(--glass-bg-light);
+    background: var(--cream-200);
     cursor: pointer;
     user-select: none;
     -webkit-user-select: none;
@@ -2005,8 +2040,7 @@ button:focus-visible, .hotspot:focus-visible {
     -webkit-user-drag: none;
   }
   .mobile-notch-kiwo.kiwo-holding {
-    border-color: var(--gold-400);
-    box-shadow: 0 0 0 6px rgba(240,193,75,0.15);
+    box-shadow: 0 0 0 6px rgba(198,99,63,0.15);
   }
 
   /* Bottom pill navbar, Samsung/Android-gesture-bar inspired */
@@ -2018,9 +2052,9 @@ button:focus-visible, .hotspot:focus-visible {
     bottom: 0; left: 0; right: 0;
     z-index: 300;
     padding: 0.5rem 0.4rem calc(0.5rem + env(safe-area-inset-bottom, 0px));
-    background: rgba(13,27,42,0.92);
-    backdrop-filter: blur(16px);
-    border-top: 1px solid var(--glass-border);
+    background: #ffffff;
+    border-top: none;
+    box-shadow: var(--shadow-soft);
   }
   .mobile-navbar-btn {
     display: flex;
@@ -2029,16 +2063,16 @@ button:focus-visible, .hotspot:focus-visible {
     gap: 0.15rem;
     background: transparent;
     border: none;
-    color: var(--text-300);
+    color: var(--charcoal-600);
     font-family: var(--font-ui);
     font-size: 0.62rem;
     padding: 0.3rem 0.6rem;
-    border-radius: 12px;
+    border-radius: var(--radius-sm);
     cursor: pointer;
     transition: color 0.2s ease, background 0.2s ease, transform 0.15s ease;
   }
   .mobile-navbar-btn svg { width: 20px; height: 20px; }
-  .mobile-navbar-btn.active { color: var(--gold-400); background: rgba(240,193,75,0.12); }
+  .mobile-navbar-btn.active { color: var(--terracotta-600); background: var(--cream-200); }
   .mobile-navbar-btn:active { transform: scale(0.92); }
 
   /* View padding accounts for notch above + navbar below */
@@ -2191,20 +2225,20 @@ input:focus-visible,
 }
 
 /* Input placeholder consistency + smoother caret color */
-input::placeholder { color: var(--text-300); opacity: 0.7; }
-input { caret-color: var(--gold-400); }
+input::placeholder { color: var(--charcoal-600); opacity: 0.7; }
+input { caret-color: var(--terracotta-600); }
 
 /* Nav link underline-free active state polish */
 .nav-links button.active {
-  box-shadow: inset 0 0 0 1px rgba(240,193,75,0.25);
+  box-shadow: inset 0 0 0 1px rgba(198,99,63,0.2);
 }
 
 /* Quiz option buttons: subtle press feedback */
 .quiz-btn:active { transform: scale(0.97); }
 
 /* Scrollbar refinement for Firefox + consistent corner on webkit */
-* { scrollbar-color: var(--gold-500) var(--night-900); }
-::-webkit-scrollbar-corner { background: var(--night-900); }
+* { scrollbar-color: var(--terracotta-400) var(--cream-200); }
+::-webkit-scrollbar-corner { background: var(--cream-200); }
 
 /* Certificate card subtle entrance polish */
 .certificate-card {
