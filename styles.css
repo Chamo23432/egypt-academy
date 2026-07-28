@@ -70,36 +70,6 @@ input[type="text"]:focus, input[type="password"]:focus, input[type="email"]:focu
   border-color: var(--gold-400);
 }
 
-/* ============ Themes ============ */
-[data-theme="dark"] {
-  --night-900: #05090d;
-  --night-800: #0c141c;
-  --glass-bg: rgba(10, 16, 22, 0.6);
-  --glass-bg-light: rgba(255, 255, 255, 0.05);
-  --glass-border: rgba(240, 193, 75, 0.25);
-  --text-100: #e8e8e8;
-  --text-300: #a8a8a8;
-}
-[data-theme="light"] {
-  --night-900: #f3e6c8;
-  --night-800: #ece0c2;
-  --lapis-600: #cfa93b;
-  --glass-bg: rgba(255, 255, 255, 0.55);
-  --glass-bg-light: rgba(20, 43, 64, 0.06);
-  --glass-border: rgba(180, 130, 20, 0.35);
-  --gold-400: #a9720c;
-  --gold-500: #8a5c08;
-  --text-100: #1c2b38;
-  --text-300: #4a5a68;
-}
-[data-theme="light"] input[type="text"],
-[data-theme="light"] input[type="password"],
-[data-theme="light"] input[type="email"],
-[data-theme="light"] textarea,
-[data-theme="light"] select {
-  background: rgba(0,0,0,0.04);
-  color-scheme: light;
-}
 
 
 ::-webkit-scrollbar { width: 12px; height: 12px; }
@@ -1739,33 +1709,7 @@ button:focus-visible, .hotspot:focus-visible {
   .setup-card { padding: 1.8rem; }
 }
 
-/* ============ Setup Wizard — theme & cosmo steps ============ */
-.setup-theme-grid {
-  display: flex;
-  gap: 0.7rem;
-  justify-content: center;
-  margin: 1.2rem 0 1.6rem;
-  flex-wrap: wrap;
-}
-.setup-theme-btn {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.4rem;
-  font-family: var(--font-ui);
-  font-size: 0.8rem;
-  background: var(--glass-bg-light);
-  border: 1px solid var(--glass-border);
-  color: var(--text-100);
-  padding: 0.7rem 1rem;
-  border-radius: 12px;
-  cursor: pointer;
-}
-.setup-theme-btn.active { border-color: var(--gold-400); background: rgba(240,193,75,0.18); }
-.setup-theme-swatch { width: 22px; height: 22px; border-radius: 50%; border: 1px solid rgba(255,255,255,0.25); }
-.setup-theme-swatch-default { background: linear-gradient(135deg, #0d1b2a, #d4a017); }
-.setup-theme-swatch-dark { background: linear-gradient(135deg, #05090d, #f0c14b); }
-.setup-theme-swatch-light { background: linear-gradient(135deg, #f3e6c8, #a9720c); }
+/* ============ Setup Wizard — cosmo step ============ */
 
 .setup-cosmo-toggle-row {
   display: flex;
@@ -2156,7 +2100,7 @@ button:focus-visible, .hotspot:focus-visible {
 
 /* Universal smooth transitions on all interactive controls that lacked them */
 .devtools-btn, .devtools-lock-input, .profile-save-btn, .cosmo-save-btn,
-.settings-danger-btn, .quiz-next-btn, .cosmo-theme-btn, .theme-btn,
+.settings-danger-btn, .quiz-next-btn, .cosmo-theme-btn,
 .hiero-card, .gods-card, .khufu-fact-card, .khafre-fact-card, .menkaure-fact-card,
 .river-fact-card, .lotus-fact-card, .croc-fact-card, .progress-row .bar-fill,
 .mobile-more-item, .mobile-navbar-btn, .search-result-item, .kiwo-send-btn,
@@ -3429,30 +3373,7 @@ input { caret-color: var(--gold-400); }
   color: var(--text-100);
   margin: 0 0 0.8rem;
 }
-.theme-options { display: flex; gap: 0.75rem; flex-wrap: wrap; }
-.theme-btn {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  font-family: var(--font-ui);
-  font-size: 0.85rem;
-  background: var(--glass-bg-light);
-  border: 1px solid var(--glass-border);
-  color: var(--text-100);
-  padding: 0.55rem 1rem;
-  border-radius: 999px;
-  cursor: pointer;
-}
-.theme-btn.active { border-color: var(--gold-400); background: rgba(240,193,75,0.18); }
-.theme-swatch {
-  width: 16px; height: 16px;
-  border-radius: 50%;
-  display: inline-block;
-  border: 1px solid rgba(255,255,255,0.3);
-}
-.theme-swatch-default { background: linear-gradient(135deg, #0d1b2a, #d4a017); }
-.theme-swatch-dark { background: linear-gradient(135deg, #05090d, #f0c14b); }
-.theme-swatch-light { background: linear-gradient(135deg, #f3e6c8, #a9720c); }
+
 
 .settings-toggle-row {
   display: flex;

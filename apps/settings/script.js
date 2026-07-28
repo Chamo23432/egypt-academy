@@ -1,5 +1,4 @@
 (function () {
-  const THEME_KEY = "egyptAcademyTheme";
   const SETTINGS_KEY = "egyptAcademySettings";
   const AMBIENT_KEY = "egyptAcademyAmbientLighting";
 
@@ -8,15 +7,6 @@
     catch { return {}; }
   }
   function saveSettings(s) { localStorage.setItem(SETTINGS_KEY, JSON.stringify(s)); }
-
-  function applyTheme(theme) {
-    if (theme === "default") {
-      document.documentElement.removeAttribute("data-theme");
-    } else {
-      document.documentElement.setAttribute("data-theme", theme);
-    }
-    localStorage.setItem(THEME_KEY, theme);
-  }
 
   function applyMotionSetting(reduceMotion) {
     document.documentElement.style.setProperty(
@@ -100,18 +90,6 @@
   }
   initAccountSection();
 
-  const themeButtons = document.querySelectorAll(".theme-btn");
-  const currentTheme = localStorage.getItem(THEME_KEY) || "default";
-  themeButtons.forEach(btn => {
-    btn.classList.toggle("active", btn.dataset.themeValue === currentTheme);
-    btn.addEventListener("click", () => {
-      themeButtons.forEach(b => b.classList.remove("active"));
-      btn.classList.add("active");
-      applyTheme(btn.dataset.themeValue);
-      if (window.Cosmo) window.Cosmo.reactTo("themeChanged", btn.dataset.themeValue);
-    });
-  });
-
   const settings = getSettings();
   const alwaysLabelsBox = document.getElementById("setting-always-labels");
   const reduceMotionBox = document.getElementById("setting-reduce-motion");
@@ -151,9 +129,7 @@
   });
 
   document.getElementById("reset-settings-btn").addEventListener("click", () => {
-    if (!confirm("Reset theme and preferences to defaults? This won't affect your progress or account.")) return;
-    applyTheme("default");
-    themeButtons.forEach(b => b.classList.toggle("active", b.dataset.themeValue === "default"));
+    if (!confirm("Reset preferences to defaults? This won't affect your progress or account.")) return;
     saveSettings({ alwaysLabels: false, reduceMotion: false });
     alwaysLabelsBox.checked = false;
     reduceMotionBox.checked = false;
@@ -170,13 +146,11 @@
     localStorage.removeItem("egyptAcademyAccount");
     localStorage.removeItem("egyptAcademyProgress");
     localStorage.removeItem(SETTINGS_KEY);
-    localStorage.removeItem(THEME_KEY);
     localStorage.removeItem("egyptAcademyDevToolsRevealed");
     localStorage.removeItem("egyptAcademyCreditsUnlocked");
     localStorage.removeItem("kiwoConversations");
     localStorage.removeItem("cosmoSettings");
     localStorage.removeItem(AMBIENT_KEY);
-    document.documentElement.removeAttribute("data-theme");
     document.documentElement.removeAttribute("data-ambient");
     location.reload();
   });

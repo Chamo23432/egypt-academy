@@ -78,10 +78,10 @@ const EgyptAcademy = (() => {
   }
 
   /* ---------- AUTH FLOW ---------- */
-  const SETUP_STEP_ORDER = ["intro", "name", "password", "recovery", "theme", "cosmo", "tour-choice", "tour", "finish"];
+  const SETUP_STEP_ORDER = ["intro", "name", "password", "recovery", "cosmo", "tour-choice", "tour", "finish"];
   const SETUP_SCREEN_IDS = {
     intro: "setup-intro", name: "setup-name", password: "setup-password",
-    recovery: "setup-recovery", theme: "setup-theme", cosmo: "setup-cosmo",
+    recovery: "setup-recovery", cosmo: "setup-cosmo",
     "tour-choice": "setup-tour-choice", tour: "setup-tour", finish: "setup-finish"
   };
   let setupMusicEl = null;
@@ -174,33 +174,14 @@ const EgyptAcademy = (() => {
     document.getElementById("recovery-code-text").textContent = code;
     showSetupStep("recovery");
   });
-  document.getElementById("password-skip-btn").addEventListener("click", () => showSetupStep("theme"));
+  document.getElementById("password-skip-btn").addEventListener("click", () => showSetupStep("cosmo"));
 
-  document.getElementById("recovery-continue-btn").addEventListener("click", () => showSetupStep("theme"));
+  document.getElementById("recovery-continue-btn").addEventListener("click", () => showSetupStep("cosmo"));
   document.getElementById("recovery-copy-btn").addEventListener("click", () => {
     copyToClipboard(document.getElementById("recovery-code-text").textContent, "recovery-copy-feedback");
   });
 
-  /* ---------- Step 4: theme ---------- */
-  let setupSelectedTheme = "default";
-  document.querySelectorAll(".setup-theme-btn").forEach(btn => {
-    btn.addEventListener("click", () => {
-      document.querySelectorAll(".setup-theme-btn").forEach(b => b.classList.remove("active"));
-      btn.classList.add("active");
-      setupSelectedTheme = btn.dataset.themeValue;
-      if (setupSelectedTheme === "default") {
-        document.documentElement.removeAttribute("data-theme");
-      } else {
-        document.documentElement.setAttribute("data-theme", setupSelectedTheme);
-      }
-    });
-  });
-  document.getElementById("setup-theme-next-btn").addEventListener("click", () => {
-    localStorage.setItem("egyptAcademyTheme", setupSelectedTheme);
-    showSetupStep("cosmo");
-  });
-
-  /* ---------- Step 5: cosmo ---------- */
+  /* ---------- Step 4: cosmo ---------- */
   document.getElementById("setup-cosmo-next-btn").addEventListener("click", () => {
     const enable = document.getElementById("setup-cosmo-toggle").checked;
     if (window.Cosmo) window.Cosmo.updateSettings({ enabled: enable });

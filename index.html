@@ -8,10 +8,8 @@
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles.css" />
 <script>
-  // Apply saved theme before paint to avoid a flash of the default theme
+  // Apply saved ambient lighting preference before paint
   (function () {
-    var t = localStorage.getItem("egyptAcademyTheme");
-    if (t && t !== "default") document.documentElement.setAttribute("data-theme", t);
     var ambient = localStorage.getItem("egyptAcademyAmbientLighting");
     if (ambient === "true") document.documentElement.setAttribute("data-ambient", "true");
   })();
@@ -34,7 +32,6 @@
         <span class="setup-step-dot" data-step="name"></span>
         <span class="setup-step-dot" data-step="password"></span>
         <span class="setup-step-dot" data-step="recovery"></span>
-        <span class="setup-step-dot" data-step="theme"></span>
         <span class="setup-step-dot" data-step="cosmo"></span>
         <span class="setup-step-dot" data-step="tour-choice"></span>
         <span class="setup-step-dot" data-step="finish"></span>
@@ -51,7 +48,7 @@
 
       <div id="setup-name" class="setup-screen">
         <div class="auth-card glass-panel setup-card">
-          <p class="setup-step-label">Step 1 of 7</p>
+          <p class="setup-step-label">Step 1 of 6</p>
           <h1 class="auth-title">What's your name?</h1>
           <p class="auth-subtitle">This is how Egypt Academy will greet you.</p>
           <label class="auth-label">Student name</label>
@@ -63,7 +60,7 @@
 
       <div id="setup-password" class="setup-screen">
         <div class="auth-card glass-panel setup-card">
-          <p class="setup-step-label">Step 2 of 7</p>
+          <p class="setup-step-label">Step 2 of 6</p>
           <h1 class="auth-title">Secure your account</h1>
           <p class="auth-subtitle">Add a password now, or set one later from Settings.</p>
           <label class="auth-label">Password</label>
@@ -78,7 +75,7 @@
 
       <div id="setup-recovery" class="setup-screen">
         <div class="auth-card glass-panel setup-card">
-          <p class="setup-step-label">Step 3 of 7</p>
+          <p class="setup-step-label">Step 3 of 6</p>
           <h1 class="auth-title">Save your recovery code</h1>
           <p class="auth-subtitle">If you forget your password, you'll need this code. It won't be shown again.</p>
           <div class="recovery-code-box" id="recovery-code-text"></div>
@@ -88,32 +85,9 @@
         </div>
       </div>
 
-      <div id="setup-theme" class="setup-screen">
-        <div class="auth-card glass-panel setup-card">
-          <p class="setup-step-label">Step 4 of 7</p>
-          <h1 class="auth-title">Pick a theme</h1>
-          <p class="auth-subtitle">You can always change this later in Settings.</p>
-          <div class="setup-theme-grid" id="setup-theme-grid">
-            <button class="setup-theme-btn active" data-theme-value="default">
-              <span class="setup-theme-swatch setup-theme-swatch-default"></span>
-              Default
-            </button>
-            <button class="setup-theme-btn" data-theme-value="dark">
-              <span class="setup-theme-swatch setup-theme-swatch-dark"></span>
-              Dark
-            </button>
-            <button class="setup-theme-btn" data-theme-value="light">
-              <span class="setup-theme-swatch setup-theme-swatch-light"></span>
-              Light
-            </button>
-          </div>
-          <button class="auth-btn" id="setup-theme-next-btn">Continue</button>
-        </div>
-      </div>
 
-      <div id="setup-cosmo" class="setup-screen">
         <div class="auth-card glass-panel setup-card">
-          <p class="setup-step-label">Step 5 of 7</p>
+          <p class="setup-step-label">Step 4 of 6</p>
           <h1 class="auth-title">Meet Cosmo</h1>
           <p class="auth-subtitle">Chameleo is an optional desktop buddy who can float around and help with quizzes. You can change this anytime in the Chameleo app.</p>
           <label class="setup-cosmo-toggle-row">
@@ -126,7 +100,7 @@
 
       <div id="setup-tour-choice" class="setup-screen">
         <div class="auth-card glass-panel setup-card">
-          <p class="setup-step-label">Step 6 of 7</p>
+          <p class="setup-step-label">Step 5 of 6</p>
           <h1 class="auth-title">Take the Welcome Tour?</h1>
           <p class="auth-subtitle">See how the wallpapers, quizzes, and Chameleo work — takes about a minute.</p>
           <button class="auth-btn" id="setup-tour-start-btn">Take the tour</button>
@@ -150,7 +124,7 @@
 
       <div id="setup-finish" class="setup-screen">
         <div class="auth-card glass-panel setup-card">
-          <p class="setup-step-label">Step 7 of 7</p>
+          <p class="setup-step-label">Step 6 of 6</p>
           <div class="setup-ankh">&#9765;</div>
           <h1 class="auth-title" id="setup-finish-title">You're all set!</h1>
           <p class="auth-subtitle">Your account is ready. Time to start exploring ancient Egypt.</p>
