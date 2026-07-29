@@ -86,8 +86,8 @@ html, body {
   margin: 0;
   padding: 0;
   height: 100%;
-  background: var(--night-900);
-  color: var(--text-100);
+  background: var(--cream-100);
+  color: var(--charcoal-900);
   font-family: var(--font-body);
   overflow-x: hidden;
 }
@@ -461,33 +461,49 @@ html, body {
   padding: 2rem;
   display: grid;
   gap: 1.5rem;
+  position: relative;
+  overflow: hidden;
 }
+.dashboard::before,
+.dashboard::after {
+  content: "";
+  position: absolute;
+  border-radius: 50%;
+  z-index: -1;
+  pointer-events: none;
+}
+.dashboard::before {
+  top: -80px; left: -100px;
+  width: 260px; height: 260px;
+  background: var(--sage-200);
+  opacity: 0.5;
+}
+.dashboard::after {
+  bottom: 10%; right: -120px;
+  width: 300px; height: 300px;
+  background: var(--teal-200);
+  opacity: 0.45;
+}
+.dashboard-art {
+  position: absolute;
+  z-index: -1;
+  pointer-events: none;
+  border-radius: 50%;
+}
+.dashboard-art.art-1 { top: 15%; right: 6%; width: 90px; height: 90px; background: var(--terracotta-400); opacity: 0.35; }
+.dashboard-art.art-2 { top: 55%; left: 2%; width: 70px; height: 70px; background: var(--mustard-500); opacity: 0.3; }
+.dashboard-art.art-3 { bottom: 4%; left: 30%; width: 130px; height: 130px; background: var(--coral-500); opacity: 0.22; }
+.dashboard-art.art-4 { top: 35%; left: 45%; width: 50px; height: 50px; background: var(--sage-500); opacity: 0.25; border-radius: 16px; }
+.dashboard-art.art-5 { top: 5%; left: 55%; width: 60px; height: 60px; background: var(--slate-600); opacity: 0.18; }
 
 .dashboard-hero {
   text-align: center;
   padding: 2.5rem 1.5rem;
   position: relative;
   overflow: hidden;
-}
-.dashboard-hero::before {
-  content: "";
-  position: absolute;
-  top: -60px; left: -60px;
-  width: 160px; height: 160px;
-  border-radius: 50%;
-  background: var(--sage-200);
-  opacity: 0.6;
-  z-index: 0;
-}
-.dashboard-hero::after {
-  content: "";
-  position: absolute;
-  bottom: -70px; right: -50px;
-  width: 180px; height: 180px;
-  border-radius: 50%;
-  background: var(--teal-200);
-  opacity: 0.5;
-  z-index: 0;
+  background: #ffffff;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-soft);
 }
 .dashboard-hero h1,
 .dashboard-hero p {
