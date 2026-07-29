@@ -462,46 +462,52 @@ html, body {
   display: grid;
   gap: 1.5rem;
   position: relative;
-  overflow: hidden;
 }
 .dashboard::before,
 .dashboard::after {
   content: "";
   position: absolute;
   border-radius: 50%;
-  z-index: -1;
+  z-index: 0;
   pointer-events: none;
 }
 .dashboard::before {
-  top: -80px; left: -100px;
+  top: -60px; left: -140px;
   width: 260px; height: 260px;
   background: var(--sage-200);
-  opacity: 0.5;
+  opacity: 0.9;
 }
 .dashboard::after {
-  bottom: 10%; right: -120px;
+  bottom: 6%; right: -160px;
   width: 300px; height: 300px;
   background: var(--teal-200);
-  opacity: 0.45;
+  opacity: 0.85;
 }
 .dashboard-art {
   position: absolute;
-  z-index: -1;
+  z-index: 0;
   pointer-events: none;
   border-radius: 50%;
 }
-.dashboard-art.art-1 { top: 15%; right: 6%; width: 90px; height: 90px; background: var(--terracotta-400); opacity: 0.35; }
-.dashboard-art.art-2 { top: 55%; left: 2%; width: 70px; height: 70px; background: var(--mustard-500); opacity: 0.3; }
-.dashboard-art.art-3 { bottom: 4%; left: 30%; width: 130px; height: 130px; background: var(--coral-500); opacity: 0.22; }
-.dashboard-art.art-4 { top: 35%; left: 45%; width: 50px; height: 50px; background: var(--sage-500); opacity: 0.25; border-radius: 16px; }
-.dashboard-art.art-5 { top: 5%; left: 55%; width: 60px; height: 60px; background: var(--slate-600); opacity: 0.18; }
+.dashboard-art.art-1 { top: 8%; right: -60px; width: 110px; height: 110px; background: var(--terracotta-400); opacity: 0.8; }
+.dashboard-art.art-2 { top: 48%; left: -70px; width: 130px; height: 130px; background: var(--mustard-500); opacity: 0.75; }
+.dashboard-art.art-3 { bottom: -60px; left: 38%; width: 170px; height: 170px; background: var(--coral-500); opacity: 0.6; }
+.dashboard-art.art-4 { top: 30%; right: 42%; width: 60px; height: 60px; background: var(--sage-500); opacity: 0.7; border-radius: 18px; }
+.dashboard-art.art-5 { top: -50px; right: 30%; width: 90px; height: 90px; background: var(--slate-600); opacity: 0.5; }
+
+.dashboard-hero,
+.wallpaper-grid,
+.progress-panel {
+  position: relative;
+  z-index: 1;
+}
 
 .dashboard-hero {
   text-align: center;
   padding: 2.5rem 1.5rem;
   position: relative;
   overflow: hidden;
-  background: #ffffff;
+  background: var(--cream-200);
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-soft);
 }
@@ -570,7 +576,7 @@ html, body {
   color: var(--cream-100);
 }
 
-.progress-panel { }
+.progress-panel { background: var(--cream-200); }
 .progress-panel h2 {
   font-family: var(--font-display);
   font-weight: 600;
@@ -735,11 +741,35 @@ html, body {
   align-items: center;
   justify-content: center;
   padding: 2rem;
+  position: relative;
+  overflow: hidden;
+}
+.auth-view::before {
+  content: "";
+  position: absolute;
+  top: -100px; right: -100px;
+  width: 300px; height: 300px;
+  border-radius: 50%;
+  background: var(--sage-200);
+  opacity: 0.7;
+  z-index: 0;
+}
+.auth-view::after {
+  content: "";
+  position: absolute;
+  bottom: -120px; left: -90px;
+  width: 280px; height: 280px;
+  border-radius: 50%;
+  background: var(--teal-200);
+  opacity: 0.6;
+  z-index: 0;
 }
 .auth-card {
   max-width: 420px;
   width: 100%;
   padding: 2rem;
+  position: relative;
+  z-index: 1;
 }
 .auth-title {
   font-family: var(--font-display);
@@ -768,7 +798,7 @@ html, body {
   padding: 0.7rem 0.9rem;
   border-radius: var(--radius-sm);
   border: 1px solid var(--cream-200);
-  background: var(--cream-100);
+  background: var(--cream-200);
   color: var(--charcoal-900);
   font-family: var(--font-ui);
 }
