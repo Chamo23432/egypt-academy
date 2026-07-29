@@ -28,11 +28,6 @@ const EgyptAcademy = (() => {
     }
 
     const quizEntry = (DATA.quizzes || []).find(q => q.appId === appId);
-    if (quizEntry) {
-      pushNotification(`${quizEntry.label} submitted successfully.`);
-    } else {
-      pushNotification("Lesson completed.");
-    }
   }
   window.markLessonComplete = markComplete;
 
@@ -60,13 +55,13 @@ const EgyptAcademy = (() => {
     if (viewId === "view-settings") loadContentApp("settings", "settings-content");
     if (viewId === "view-devtools") loadContentApp("devtools", "devtools-content");
     const topbar = document.querySelector(".topbar");
-    const userTopbar = document.querySelector(".top-userbar");
+    const sidebarTrigger = document.getElementById("sidebar-trigger");
     const mobileNotch = document.querySelector(".mobile-notch");
     const mobileNavbar = document.querySelector(".mobile-navbar");
     const isCredits = viewId === "view-credits";
     const hideChrome = isCredits;
     if (topbar) topbar.style.display = hideChrome ? "none" : "flex";
-    if (userTopbar) userTopbar.style.display = hideChrome ? "none" : "flex";
+    if (sidebarTrigger) sidebarTrigger.style.display = hideChrome ? "none" : "";
     if (mobileNotch) mobileNotch.style.display = hideChrome ? "none" : "";
     if (mobileNavbar) mobileNavbar.style.display = hideChrome ? "none" : "";
 
@@ -586,7 +581,6 @@ const EgyptAcademy = (() => {
     bindSearchInput("mobile-search-input", "mobile-search-results", "mobile-search-processing", ".mobile-search-sheet");
 
     const centerSearchOverlay = document.getElementById("center-search-overlay");
-    initNotifications();
     const sidebarSearchIcon = document.getElementById("sidebar-search-icon");
     if (sidebarSearchIcon && centerSearchOverlay) {
       sidebarSearchIcon.addEventListener("click", () => {
@@ -597,86 +591,6 @@ const EgyptAcademy = (() => {
         if (e.target === centerSearchOverlay) centerSearchOverlay.classList.remove("open");
       });
     }
-  }
-
-  let notifications = [];
-  let renderNotifPanel = null;
-
-  function formatNotifTime() {
-    const now = new Date();
-    return now.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
-  }
-
-  function pushNotification(title) {
-    notifications.unshift({ title, time: formatNotifTime() });
-    if (renderNotifPanel) renderNotifPanel();
-    showNotifToast(title);
-  }
-
-  function showNotifToast(title) {
-    let toastRoot = document.getElementById("notif-toast-root");
-    if (!toastRoot) {
-      toastRoot = document.createElement("div");
-      toastRoot.id = "notif-toast-root";
-      toastRoot.className = "notif-toast-root";
-      document.body.appendChild(toastRoot);
-    }
-    const toast = document.createElement("div");
-    toast.className = "notif-toast";
-    toast.innerHTML = `
-      <span class="notif-toast-icon">
-        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
-      </span>
-      <span class="notif-toast-text">${title}</span>
-    `;
-    toastRoot.appendChild(toast);
-    requestAnimationFrame(() => toast.classList.add("visible"));
-    setTimeout(() => {
-      toast.classList.remove("visible");
-      setTimeout(() => toast.remove(), 300);
-    }, 3500);
-  }
-
-  function initNotifications() {
-    const bell = document.getElementById("top-userbar-bell");
-    const panel = document.getElementById("notif-panel");
-    const list = document.getElementById("notif-panel-list");
-    const dot = document.getElementById("notif-dot");
-    const clearBtn = document.getElementById("notif-clear-btn");
-    if (!bell || !panel || !list) return;
-
-    function render() {
-      if (notifications.length === 0) {
-        list.innerHTML = `<div class="notif-empty">No notifications</div>`;
-        dot.style.display = "none";
-        return;
-      }
-      dot.style.display = "block";
-      list.innerHTML = notifications.map(n => `
-        <div class="notif-item">
-          <span class="notif-item-title">${n.title}</span>
-          <span class="notif-item-time">${n.time}</span>
-        </div>
-      `).join("");
-    }
-    renderNotifPanel = render;
-
-    bell.addEventListener("click", (e) => {
-      e.stopPropagation();
-      panel.classList.toggle("open");
-    });
-    document.addEventListener("click", (e) => {
-      if (panel.classList.contains("open") && !panel.contains(e.target) && e.target !== bell) {
-        panel.classList.remove("open");
-      }
-    });
-    if (clearBtn) {
-      clearBtn.addEventListener("click", () => {
-        notifications = [];
-        render();
-      });
-    }
-    render();
   }
 
   function bindSearchInput(inputId, resultsId, processingId, closeOnClickOutsideSelector) {
@@ -754,6 +668,7 @@ const EgyptAcademy = (() => {
     document.querySelectorAll(".nav-links button[data-view]").forEach(btn => {
       btn.addEventListener("click", () => showView(btn.dataset.view));
     });
+    initSidebarToggle();
     initSearch();
     initMobileNav();
     if (window.Kiwo) {
@@ -763,6 +678,40 @@ const EgyptAcademy = (() => {
     }
     if (window.Credits) window.Credits.checkUnlock();
     showView("view-dashboard");
+  }
+
+  function initSidebarToggle() {
+    const trigger = document.getElementById("sidebar-trigger");
+    const panel = document.getElementById("app-sidebar");
+    if (!trigger || !panel) return;
+    let open = false;
+    let animating = false;
+
+    trigger.addEventListener("click", () => {
+      if (animating) return;
+      animating = true;
+      if (!open) {
+        // opening: circle unfolds into a short line, then panel expands + line grows together
+        trigger.classList.add("unfolding");
+        setTimeout(() => {
+          panel.classList.add("expanded");
+          trigger.classList.add("grown");
+          open = true;
+          trigger.setAttribute("aria-expanded", "true");
+          animating = false;
+        }, 480);
+      } else {
+        // closing: mirror of opening, reversed
+        panel.classList.remove("expanded");
+        trigger.classList.remove("grown");
+        setTimeout(() => {
+          trigger.classList.remove("unfolding");
+          open = false;
+          trigger.setAttribute("aria-expanded", "false");
+          animating = false;
+        }, 480);
+      }
+    });
   }
 
   function initMobileNav() {
